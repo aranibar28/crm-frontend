@@ -1,0 +1,243 @@
+<form (ngSubmit)="register_sale()" [formGroup]="myForm" class="row">
+    <div class="col-12 col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Nueva Venta</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Cliente</label>
+                        <div class="input-group">
+                            <input formControlName="customer" id="input_customer" type="text" class="form-control" placeholder="Seleccionar un cliente" readonly>
+                            <button data-bs-toggle="modal" data-bs-target="#modal_customer" type="button" class="btn btn-primary">Buscar</button>
+                        </div>
+                        <small *ngIf="validators('customer')" class="text-danger">Este campo es obligatorio.</small>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Canal</label>
+                        <select formControlName="channel" class="form-control btn-light ">
+                            <option value="" selected disabled>Seleccionar</option>
+                            <option *ngFor="let item of channels" [value]="item.name">{{ item.name }}</option>
+                        </select>
+                        <small *ngIf="validators('channel')" class="text-danger">Este campo es obligatorio.</small>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Buscar Productos</label>
+                    <div class="input-group">
+                        <input (keydown)="search_variety()" #filter_variety type="text" class="form-control" id="input_customer" placeholder="Ejemplo: Laptop rtx3060" autocomplete="off">
+                        <button (click)="search_variety()" type="button" class="btn btn-primary">Buscar</button>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="table-responsive" style="height: 340px;">
+                        <table class="table table-sm table-borderless table-nowrap table-centered mb-0">
+                            <tbody *ngIf="load_varieties">
+                                <tr>
+                                    <td class="text-center" colspan="100%">
+                                        <div class="d-flex justify-content-center my-4">
+                                            <i class="spinner-border"></i>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tbody *ngIf="!load_varieties">
+                                <tr *ngIf="varieties.length == 0">
+                                    <td class="text-center" colspan="100%">
+                                        No hay registros.
+                                    </td>
+                                </tr>
+                                <ng-container *ngFor="let item of varieties; let i = index">
+                                    <tr>
+                                        <td>
+                                            <img [src]="item.product.image?.secure_url || default_path" title="product" class="rounded me-3" height="64">
+                                            <p class="m-0 d-inline-block align-middle font-16">
+                                                <a class="text-body">{{ item.product.title }}</a>
+                                                <br>
+                                                <small class="me-2"><b>{{ item.product.variety }}:</b> {{ item.title }}</small>
+                                                <small class="me-2"><b>Stock:</b> {{ item.stock }}</small>
+                                            </p>
+                                        </td>
+                                        <td>
+                                            {{ item.product.price | currency: 'S/. ' }}
+                                        </td>
+                                        <td style="width: 150px;">
+                                            <div class="input-group flex-nowrap">
+                                                <button (click)="decrease_qty(i)" [disabled]="item.quantity == 0" class="btn btn-light btn-sm" type="button" >-</button>
+                                                <span class="d-flex justify-content-center align-items-center text-danger fw-bold" style="width: 40px;">{{ item.quantity }}</span>
+                                                <button (click)="increase_qty(i)" [disabled]="item.quantity >= item.stock" class="btn btn-light btn-sm" type="button" >+</button>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <button (click)="add_item(item, i)" type="button" class="btn btn-success btn-sm">
+                                              <i class="mdi mdi-plus"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Orden de Compra</h5>
+            </div>
+            <div  class="card-body">
+                <div class="table-responsive" style="height: 348px;">
+                    <table class="table table-sm table-borderless table-nowrap table-centered mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Producto</th>
+                                <th>Qty</th>
+                                <th>Precio Unit</th>
+                                <th>Subtotal</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="details.length == 0">
+                                <td class="text-center" colspan="100%">
+                                    <div class="py-4">
+                                        <img src="assets/images/resources/empty.png" width="150" alt="cart">
+                                        <p class="text-muted">El carrito está vacío.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr *ngFor="let item of details; let i = index">
+                                <td>
+                                    <img [src]="item.temp_image || default_path" title="product" class="rounded me-3" height="64">
+                                    <p class="m-0 d-inline-block align-middle font-16">
+                                        <a class="text-body">{{ item.temp_product }}</a><br>
+                                        <small class="me-2"><b>{{ item.temp_type }}:</b> {{ item.temp_variety }}</small>
+                                    </p>
+                                </td>
+                                <td>{{ item.quantity }}</td>
+                                <td>{{ item.price | currency: 'S/. ' }}</td>
+                                <td>{{ item.quantity * item.price | currency: 'S/. '}}</td>
+                                <td>
+                                    <a (click)="del_item(item, i)" class="font-18 text-danger pointer" title="Eliminar"><i class="uil uil-trash"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-6 my-3 text-center">
+                        <b>Cantidad: </b><span class="text-danger">{{ total_products }} unid.</span>
+                    </div>
+                    <div class="col-6 my-3 text-center">
+                        <b>Total Pagar: </b><span class="text-success">{{ total_amount | currency: 'S/. ' }}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Método</label>
+                        <div class="dropdown">
+                            <button class="btn btn-light dropdown-toggle w-100 text-start float-end" type="button" id="dropdownMethod" data-bs-toggle="dropdown" aria-expanded="true">
+                                Seleccionar
+                            </button>
+                            <div class="dropdown-menu w-100">
+                                <a class="dropdown-item" (click)="select_method('Paypal')">
+                                    <img src="assets/images/resources/paypal.png"> Paypal
+                                </a>
+                                <a class="dropdown-item" (click)="select_method('Transferencia')">
+                                    <img src="assets/images/resources/transferencia-de-dinero.png"> Transferencia
+                                </a>
+                                <a class="dropdown-item" (click)="select_method('Depósito')">
+                                    <img src="assets/images/resources/depositar.png"> Depósito
+                                </a>
+                                <a class="dropdown-item" (click)="select_method('Tarjeta Crédito')">
+                                    <img src="assets/images/resources/tarjeta-de-credito.png"> Tarjeta Crédito
+                                </a>
+                            </div>
+                        </div>
+                        <small *ngIf="validators('method')" class="text-danger">Este campo es obligatorio.</small>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Banco</label>
+                        <div class="dropdown">
+                            <button class="btn btn-light dropdown-toggle w-100 text-start float-end" type="button" id="dropdownBank" data-bs-toggle="dropdown" aria-expanded="false">
+                                Seleccionar
+                            </button>
+                            <div class="dropdown-menu w-100">
+                                <a class="dropdown-item" (click)="select_bank('BCP')">
+                                    <img src="assets/images/resources/bcp.png" style="width: 17px;"> BCP
+                                </a>
+                                <a class="dropdown-item" (click)="select_bank('BBVA')">
+                                    <img src="assets/images/resources/bbva.png" style="width: 17px;"> BBVA
+                                </a>
+                                <a class="dropdown-item" (click)="select_bank('Interbank')">
+                                    <img src="assets/images/resources/interbank.png" style="width: 17px;"> Interbank
+                                </a>
+                                <a class="dropdown-item" (click)="select_bank('Santander')">
+                                    <img src="assets/images/resources/santander.png" style="width: 17px;"> Santander
+                                </a>
+                            </div>
+                        </div>
+                        <small *ngIf="validators('bank')" class="text-danger">Este campo es obligatorio.</small>
+                    </div>
+                    <div class="col-12">
+                        <button *ngIf="!load_btn" type="submit" class="btn btn-success">Comprar</button>
+                        <button *ngIf="load_btn" type="button" class="btn btn-success" disabled>Comprando</button>
+                        <button type="button" class="btn btn-danger ms-2">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div id="modal_customer" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h4 class="modal-title mb-0">Seleccionar Cliente</h4>
+          <button #closeModal type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+        </div>
+
+        <div class="modal-body" style="min-height: 560px; overflow: auto;">
+          <div class="input-group mb-3">
+            <input [(ngModel)]="filter_customer" name="filter_customer" class="form-control" type="text" placeholder="Buscar un cliente" autocomplete="off">
+            <button (click)="search_customers()" type="button" class="btn btn-primary">
+                <i class="mdi mdi-magnify"></i>
+            </button>
+          </div>
+          <ng-container *ngIf="load_customers">
+            <div class="text-center p-2">Cargando datos...</div>
+          </ng-container>
+          <ng-container *ngIf="!load_customers">
+            <ng-container *ngIf="customers.length == 0">
+                <div class="text-center p-2">No se encontraron resultados.</div>
+              </ng-container>
+              <div *ngFor="let item of customers" class="d-flex justify-content-between align-items-center mb-2">
+                <div>
+                    <img [src]="item.image?.secure_url || default_path" alt="avatar" title="avatar" class="img-contain rounded d-none d-md-inline me-2" width="64" height="64">
+                    <p class="m-0 d-inline-block align-middle font-16">
+                        <a class="text-body">{{ item.full_name | titlecase }}</a>
+                        <br>
+                        <small *ngIf="item.type == 'Prospecto'" class="badge bg-warning">Prospecto</small>
+                        <small *ngIf="item.type == 'Cliente'"class="badge bg-success">Cliente</small>
+                        <small class="ms-1">{{ item.email }}</small>
+                    </p>
+                </div>
+                <button *ngIf="item.verify" (click)="select_customer(item)" class="btn btn-success btn-sm">
+                    <span class="d-none d-md-inline">Seleccionar</span>
+                    <i class="mdi mdi-check d-md-none"></i>
+                </button>
+                <button *ngIf="!item.verify" disabled class="btn btn-danger btn-sm">
+                      <span class="d-none d-md-inline">Sin Verificar</span>
+                      <i class="mdi mdi-check d-md-none"></i>
+                </button>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+</div>

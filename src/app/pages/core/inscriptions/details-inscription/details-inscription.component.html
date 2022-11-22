@@ -1,0 +1,131 @@
+<ng-container *ngIf="load_data">
+    <div class="text-center">Cargando...</div>
+</ng-container>
+
+<ng-container *ngIf="!load_data">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card ribbon-box">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="ribbon ribbon-dark d-md-flex justify-content-between">
+                            <div>
+                                <i class="mdi mdi-access-point me-1"></i>ORDER ID #{{ inscription._id | uppercase }}
+                            </div>
+                            <div>
+                                FECHA: {{ inscription.created_at | date: 'dd/MM/yyyy' }}
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <h6>Empresa</h6>
+                            <address class="mb-0">
+                                {{ company.company | uppercase }}<br>
+                                RUC: {{ company.ruc }}<br>
+                                {{ company.address }}<br>
+                                {{ company.phone }}
+                            </address>
+                        </div>
+                        <div class="col-sm-4">
+                            <h6>Cliente</h6>
+                            <address class="mb-0">
+                                {{ inscription.customer?.full_name | uppercase }}<br>
+                                DNI: {{ inscription.customer?.dni || '*******' }}<br>
+                                {{ inscription.customer?.city || '...' }}<br>
+                                {{ inscription.customer?.phone || '...' }}
+                            </address>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6>Venta</h6>
+                                    <address class="mb-0">
+                                        Estado: 
+                                        <span *ngIf="inscription.status == 'Aprobado'" class="badge bg-success">Aprobado</span>
+                                        <span *ngIf="inscription.status == 'Procesando'" class="badge bg-warning">Procesando</span>
+                                        <span *ngIf="inscription.status == 'Cancelado'" class="badge bg-danger">Cancelado</span><br>
+                                        Origen: {{inscription.origin }}<br>
+                                        Banco: {{inscription.bank }}<br>
+                                        Método: {{inscription.method }}
+                                    </address>
+                                </div>
+                                <div class="col-md-6 text-md-end align-self-center">
+                                    <img src="assets/images/barcode.png" alt="barcode-image" class="img-fluid me-2">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title mb-3">DETALLES DE LA VENTA</h4>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-centered table-nowrap mb-0">
+                            <thead class="table-light">
+                            <tr>
+                                <th>Curso</th>
+                                <th>Precio</th>
+                                <th>Descuento</th>
+                                <th>Importe</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr *ngFor="let item of details">
+                                <td>{{ item.course?.title || 'no data' }}</td>
+                                <td>{{ item.price | currency: 'S/. ' }}</td>
+                                <td [ngClass]="{ 'text-danger': item.discount_value >= 1 }">{{ item.discount_value | currency: 'S/. ' }}</td>
+                                <td>{{item.price - item.discount_value | currency: 'S/. ' }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div> 
+    
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title mb-3">Resumen del Pedido</h4>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-centered table-nowrap mb-0">
+                            <thead class="table-light">
+                            <tr>
+                                <th>Descripción</th>
+                                <th>Precio</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Subtotal :</td>
+                                <td>{{ inscription.amount -  inscription.amount * 0.18 | currency: 'S/. ' }}</td>
+                            </tr>
+                            <tr>
+                                <td>IGV (18%): </td>
+                                <td>{{ inscription.amount * 0.18 | currency: 'S/. ' }}</td>
+                            </tr>
+                            <tr>
+                                <td>Matrícula : </td>
+                                <td>{{ inscription.matricula | currency: 'S/. ' }}</td>
+                            </tr>
+                            <tr>
+                                <th>Total :</th>
+                                <th>{{ inscription.amount + inscription.matricula | currency: 'S/. ' }}</th>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="d-grid">
+                        <button routerLink="/inscriptions/payment/{{id}}" *ngIf="inscription.status == 'Procesando'" class="btn btn-success btn-sm mt-3">Registrar Pago</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</ng-container>

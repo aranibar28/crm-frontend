@@ -1,0 +1,71 @@
+<div class="row">
+  <div class="col-md-3">
+    <div *ngIf="load_data" class="card text-center">
+      <app-loading></app-loading>
+    </div>
+      <div *ngIf="!load_data" class="card text-center">
+          <div class="card-body">
+              <img  [src]="customer.image?.secure_url || default_path" class="rounded-circle avatar-lg img-thumbnail img-contain" alt="profile-image">
+              <h4 class="mb-0 mt-2">{{ customer.full_name | titlecase }}</h4>
+              <h5 class="mb-0 mt-1">{{ customer.dni }}</h5>
+              <p class="text-muted font-14">{{ customer.type }}</p>
+              
+              <div class="text-start mt-3">
+                  <p class="text-muted mb-2 font-13">
+                    <strong>Nombres :</strong> <span class="ms-2">{{ customer.first_name | titlecase }}</span>
+                  </p>
+                  <p class="text-muted mb-2 font-13">
+                    <strong>Apellidos :</strong> <span class="ms-2">{{ customer.last_name | titlecase }}</span>
+                  </p>
+                  <p class="text-muted mb-2 font-13">
+                    <strong>Correo :</strong> <span class="ms-2">{{ customer.email }}</span>
+                  </p>
+                  <p class="text-muted mb-2 font-13">
+                    <strong>Teléfono :</strong> <span class="ms-2">{{ customer.phone }}</span>
+                  </p>
+              </div>
+
+              <div class="d-grid">
+                <button routerLink="/inscriptions/create" type="button" class="btn btn-success btn-sm my-2">Inscripción</button>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <div class="col-md-9">
+      <div class="card">
+          <div class="card-body">
+              <ul class="nav nav-pills bg-nav-pills nav-justified mb-3">
+                <li class="nav-item">
+                  <a class="nav-link rounded-0" routerLink="dash"  routerLinkActive="active">
+                    <i class="uil-chart-pie"></i><span class="d-none ms-md-1 d-md-inline">Dashboard</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link rounded-0" routerLink="activity" routerLinkActive="active">
+                    <i class="uil-bolt-alt"></i><span class="d-none ms-md-1 d-md-inline">Actividades</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link rounded-0" routerLink="call" routerLinkActive="active">
+                    <i class="uil-phone"></i><span class="d-none ms-md-1 d-md-inline">Llamadas</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link rounded-0" routerLink="mail" routerLinkActive="active">
+                    <i class=" uil-envelope"></i><span class="d-none ms-md-1 d-md-inline">Correos</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link rounded-0" routerLink="task" routerLinkActive="active">
+                    <i class="uil-clipboard-alt"></i><span class="d-none ms-md-1 d-md-inline">Tareas</span>
+                  </a>
+                </li>
+              </ul>
+              <div class="tab-pane">
+                <router-outlet></router-outlet>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>

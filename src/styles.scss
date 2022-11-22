@@ -1,0 +1,112 @@
+/* You can add global styles to this file, and also import other style files */
+
+a,
+.pointer {
+  cursor: pointer;
+}
+
+.w100 {
+  text-align: center;
+  width: 100px;
+}
+
+.img-contain {
+  object-fit: contain;
+}
+
+.tbody {
+  td {
+    padding: 0;
+  }
+}
+
+.ngx-pagination {
+  margin-bottom: 0 !important;
+  padding-left: 0 !important;
+  .current {
+    background-color: #313a46 !important;
+  }
+}
+
+.avatar-upload {
+  position: relative;
+  max-width: 205px;
+  margin: 40px auto;
+  .avatar-edit {
+    position: absolute;
+    right: 12px;
+    z-index: 1;
+    top: 10px;
+    input {
+      display: none;
+      + label {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 34px;
+        height: 34px;
+        margin-bottom: 0;
+        border-radius: 100%;
+        background: #ffffff;
+        border: 1px solid transparent;
+        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+        cursor: pointer;
+        font-weight: normal;
+        transition: all 0.2s ease-in-out;
+        &:hover {
+          background: #f1f1f1;
+          border-color: #d6d6d6;
+        }
+      }
+    }
+  }
+  .avatar-preview {
+    width: 100%;
+    height: 192px;
+    position: relative;
+    border: 6px solid #f8f8f8;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+    > div {
+      width: 100%;
+      height: 100%;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+  }
+}
+
+.card-container {
+  width: 100%;
+
+  .card-input-element {
+    display: none;
+  }
+
+  .card-input {
+    max-width: 100% !important;
+    margin: 0px;
+    padding: 0px;
+
+    .card-input-title {
+      display: flex;
+      justify-content: space-between;
+      padding: 1rem 1rem 0.5rem 1rem;
+    }
+
+    .card-input-text {
+      font-weight: normal;
+      padding: 0 1rem 1rem;
+    }
+  }
+
+  .card-input:hover {
+    cursor: pointer;
+  }
+
+  .card-input-element:checked + .card-input {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    background: #0acf97 !important;
+    color: white !important;
+  }
+}

@@ -1,0 +1,116 @@
+<div class="card">
+   <div class="card-header">
+         <div class="d-md-flex justify-content-between">
+            <div class="d-md-flex align-items-center mb-2 mb-md-0">
+               <h5 class="w-100 me-2">Ciclos Vigentes</h5>
+               <select (change)="search()" [(ngModel)]="filter" class="form-select">
+                  <option value="Todos">Todos</option>
+                  <option value="Basico 1">Basico 1</option>
+                  <option value="Basico 2">Basico 2</option>
+                  <option value="Basico 3">Basico 3</option>
+                  <option value="Intermedio 1">Intermedio 1</option>
+                  <option value="Intermedio 2">Intermedio 2</option>
+                  <option value="Intermedio 2">Intermedio 3</option>
+                  <option value="Avanzado 1">Avanzado 1</option>
+                  <option value="Avanzado 2">Avanzado 2</option>
+                  <option value="Avanzado 3">Avanzado 3</option>
+               </select>
+            </div>
+            <div class="d-flex justify-content-center gap-2">
+               <button routerLink="create" type="button" class="btn btn-success">Nuevo Ciclo</button>
+               <button routerLink="/courses" class="btn btn-dark">
+                  <i class="mdi mdi-arrow-left-top me-md-1"></i>
+                  <span>Regresar</span>
+               </button>
+            </div>
+         </div>
+   </div>
+   <div class="card-body">
+      <ng-container *ngIf="load_data">
+         <app-loading></app-loading>
+      </ng-container>
+      <ng-container *ngIf="!load_data">
+         <div *ngIf="cycles.length == 0" class="col mb-2 text-center">
+            <app-data-found></app-data-found>
+         </div>
+         <div *ngFor="let item of cycles | paginate: { itemsPerPage: 3, currentPage: p }" class="row">
+            <div class="col mb-3">
+               <!-- START: INFORMACIÓN DEL CURSO -->
+               <div class="bg-light shadow-none border rounded text-dark py-2 px-4">
+                  <div class="row">
+                     <div class="col-md-3 text-center text-md-start">
+                        <div class="d-md-flex align-items-center">
+                           <div class="col-auto">
+                              <img [src]="course.image?.secure_url || default_path" class="avatar-sm rounded" alt="file-image">
+                           </div>
+                           <div class="flex-grow-1 ms-2">
+                              <div>{{ course.title }}</div>
+                              <div>{{ item.cycle.nivel }}</div>
+                              <div class="text-success">{{ item.cycle.price | currency: 'S/. ' }}</div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-md-3 text-center text-md-start">
+                        <div>Sede: {{ item.cycle.sede }}</div>
+                        <div>
+                           Ciclos:
+                           <ng-container *ngFor="let subitem of item.cycle.months; let last = last">
+                                 <ng-container *ngFor="let item of months; let i = index">
+                                    <span *ngIf="subitem == i + 1">{{ item }}<ng-container *ngIf="!last">, </ng-container></span>
+                                 </ng-container>
+                           </ng-container>
+                        </div>
+                        Del {{ item.cycle.start_date | date: 'dd/MM/yy' }} hasta {{ item.cycle.final_date | date: 'dd/MM/yy' }}
+                     </div>
+                     <div class="col-md-2 align-self-center text-center text-md-start">
+                        <div>Publicación</div>
+                        <input (change)="change_status($event,item.cycle._id)" [checked]="item.cycle.status" type="checkbox" [id]="'status-' + item.cycle._id" data-switch="success"/>
+                        <label [for]="'status-' + item.cycle._id" [attr.data-on-label]="'Si'" [attr.data-off-label]="'No'"></label>
+                     </div>
+                     <div class="col-md-2 align-self-center text-center text-md-start">
+                        <div><i class="uil uil-calender me-1"></i>{{ item.cycle.created_at | date: 'dd/MM/yy - hh:mm a' }}</div>
+                        <div><i class="uil uil-sync me-1"></i>{{ item.cycle.updated_at | date: 'dd/MM/yy - hh:mm a' }}</div>
+                     </div>
+                     <div class="col-md-2 align-self-center text-center text-md-end">
+                        <a [routerLink]="['update', item.cycle._id]" class="btn btn-warning btn-sm"><i class="mdi mdi-lead-pencil"></i></a>
+                        <a (click)="delete_item(item)" class="btn btn-danger btn-sm ms-2"><i class="mdi mdi-delete"></i></a>
+                     </div>
+                  </div>
+               </div>
+               <!-- END: INFORMACIÓN DEL CURSO -->
+   
+               <!-- START: HORARIOS DEL CURSO -->
+               <div class="text-center px-2">
+                  <div class="row border-bottom">
+                     <div class="col-12 col-md-3 fw-bold text-danger d-none d-md-inline">Salón</div>
+                     <div class="col-12 col-md-3 fw-bold text-danger d-none d-md-inline">Instructor</div>
+                     <div class="col-12 col-md-2 fw-bold text-danger d-none d-md-inline">Horario</div>
+                     <div class="col-12 col-md-2 fw-bold text-danger d-none d-md-inline">Días</div>
+                     <div class="col-12 col-md-2 fw-bold text-danger d-none d-md-inline">Aforo</div>
+                  </div>
+                  <div class="row" *ngIf="item.rooms == 0">
+                     <div class="col-12">No hay salones disponibles.</div>
+                  </div>
+                  <div class="row mb-md-0 mb-2 border-bottom" *ngFor="let subitem of item.rooms">
+                     <div class="col-12 col-md-3">{{ subitem.room }}</div>
+                     <div class="col-12 col-md-3">{{ subitem.instructor || 'Sin asignar'}}</div>
+                     <div class="col-12 col-md-2">{{ subitem.start_time }} - {{ subitem.final_time }}</div>
+                     <div class="col-12 col-md-2">
+                        <ng-container *ngFor="let item of subitem.frequency; let ultimo = last">
+                           <span *ngIf="!ultimo">{{item.substr(0,3)}}, </span>
+                           <span *ngIf="ultimo">{{item.substr(0,3)}}</span>
+                        </ng-container>
+                     </div>
+                     <div class="col-12 col-md-2">{{ subitem.students }}/{{ subitem.aforo }}</div>
+                  </div>
+               </div>
+               <!--END: HORARIOS DEL CURSO -->
+            </div>
+         </div>
+
+         <div *ngIf="cycles.length != 0" class="d-flex justify-content-center">
+            <pagination-controls (pageChange)="p = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+         </div>
+      </ng-container>
+   </div>
+</div>

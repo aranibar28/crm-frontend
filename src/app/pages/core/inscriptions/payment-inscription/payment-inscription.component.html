@@ -1,0 +1,314 @@
+<div class="row">
+    <div class="col-md-4">
+
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title my-2">Resumen de matricula</h4>
+            </div>
+            <div class="card-body">
+                <div *ngIf="load_data" class="text-center">
+                    <app-loading></app-loading>
+                </div>
+                <div *ngIf="!load_data">
+                    <div>
+                        <b>Código: </b>
+                        <a class="text-muted">{{ inscription._id | uppercase }}</a>
+                    </div>
+                    <div>
+                        <b>Asesor: </b>
+                        <span class="text-muted">{{ inscription.employee?.full_name | titlecase }}</span>
+                    </div>
+                    <div>
+                        <b>Estado: </b>
+                        <span class="text-muted">{{ inscription.status }}</span>
+                    </div>
+                    <div>
+                        <b>Importe: </b>
+                        <span class="text-muted">{{ inscription.amount | currency: 'S/ ' }}</span>
+                    </div>
+                    <div>
+                        <b>Matricula: </b>
+                        <span class="text-muted">{{ inscription.matricula | currency: 'S/ ' }}</span>
+                    </div>
+                    <div>
+                        <b>Descuento: </b>
+                        <span class="text-muted">{{ inscription.discount | currency: 'S/ ' }}</span>
+                    </div>
+                    <div>
+                        <b>Fecha: </b>
+                        <span class="text-muted">{{ inscription.created_at | date }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+
+            <div class="card-header">
+                <h4 class="card-title my-2">
+                    <b>Cursos Matriculados: </b>  ({{ details.length }})
+                </h4>
+            </div>
+
+            <div class="card-body">
+                <div *ngIf="load_payments" class="text-center">
+                    <app-loading></app-loading>
+                </div>
+                
+                <div *ngFor="let item of details">
+                    <div class="d-flex flex-column flex-grow-1 mb-2">
+                        <span><b>Curso: </b>{{ item.course?.title || 'no data' }}</span>
+                        <span><b>Salón: </b>{{ item.cycle_room?.room || 'no data' }}</span>
+                        <span><b>Precio: </b>{{ item.price | currency: 'S/ ' }}</span>
+                    </div>
+                </div>
+                
+            </div>
+   
+        </div>
+        
+    </div>
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="card-title my-2">Pagos de matricula: {{ payments.length }} pagos registrados</h4>
+                <div><a data-bs-toggle="modal" [attr.data-bs-target]="'#modalPayment'" class="btn btn-light btn-sm">Generar pago</a></div>
+            </div>
+            <div class="card-body table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Método de pago</th>
+                            <th>Concepto</th>
+                            <th>ID transacción</th>
+                            <th>Fecha</th>
+                            <th>Importe</th>
+                            <th>Ticket</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="load_payments">
+                        <tr>
+                           <td class="text-center" colspan="100%">
+                               <app-loading></app-loading>
+                           </td>
+                       </tr>
+                     </tbody>
+                     <tbody *ngIf="!load_payments">
+                        <tr *ngIf="payments.length == 0">
+                           <td class="text-center" colspan="100%">
+                               <app-data-found></app-data-found>
+                           </td>
+                       </tr>
+                       <tr *ngFor="let item of payments; let i = index">
+                        <td>{{ item.method }}</td>
+                        <td>
+                            <div>{{ item.inscription_detail?.course.title || 'Matrícula' }}</div>
+                            <span>{{ item.created_at | date: 'yyyy' }}-{{ item.correlative | zfill: 7 }}</span>
+                        </td>
+                        <td>{{ item.transaction }}</td>
+                        <td>{{ item.date | date: 'dd-MM-YYYY' }}</td>
+                        <td>{{ item.amount | currency: 'S/ ' }}</td>
+                        <td>
+                            <a data-bs-toggle="modal" [attr.data-bs-target]="'#ticket-'+item._id" class="btn btn-icon btn-info btn-sm mr-2">
+                                <i class="mdi mdi-file-document"></i>
+                            </a>
+                            <div class="modal fade" [id]="'ticket-' + item._id" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <form class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">TICKET N°{{ item.created_at | date: 'yyyy' }}-{{ item.correlative | zfill: 7 }}</h5>
+                                            <button #closeModal type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                                        </div>
+                                        <div class="card-body" [id]="'printdiv-' + i">
+                                            --------------------------------------------------------<br>
+                                            <div style="width: 300px; margin: 0 auto; display: flex; justify-content: center">
+                                               {{ company.company }}<br>
+                                            </div>
+                                            --------------------------------------------------------<br>
+                                            <div style="width: 300px; margin: 0 auto; display: flex; justify-content: center">
+                                                RUC: {{ company.ruc }}<br>
+                                            </div>
+                                            <div style="width: 300px; margin: 0 auto; display: flex; justify-content: center">
+                                                Dirección: {{ company.address }}
+                                             </div>
+                                            <div style="width: 300px; margin: 0 auto; display: flex; justify-content: center">
+                                                N°: {{ item.created_at | date: 'yyyy' }}-{{ item.correlative | zfill: 7  }}<br>
+                                            </div>
+                                            --------------------------------------------------------<br>
+                                            <b>Cliente</b>: {{ inscription.customer?.full_name }}<br>
+                                            <b>Correo</b>: {{ inscription.customer?.email }}<br>
+                                            <b>Telefono</b>: {{ inscription.customer?.phone }}<br>
+                                            --------------------------------------------------------<br>
+                                            <b>Fecha</b>: {{ item.date | date: 'dd-MM-YYYY' }}<br>
+                                            <b>Tipo</b>: {{ item.type }}<br>
+                                            --------------------------------------------------------<br>
+                                            <div style="width: 300px">
+                                                <span style="display: flex; justify-content: space-between">
+                                                    <span style="width: 15%"><b>Qty</b></span>
+                                                    <span style="width: 60%"><b>Concepto</b></span> 
+                                                    <span style="width: 25%"><b>Subotal</b></span>
+                                                </span>
+                                            </div>
+                                            ===============================<br>
+                                            <div style="width: 300px">
+                                                <span style="display: flex; justify-content: space-between">
+                                                <span style="width: 15%">x1</span>
+                                                <span style="width: 60%">
+                                                        {{ item.inscription_detail?.course.title || 'Matrícula' }}<br>
+                                                        <span>
+                                                            {{ item.transaction }}
+                                                        </span>
+                                                </span> 
+                                                <span style="width: 25%">{{ item.amount | currency: 'S/ ' }}</span>
+                                                </span>
+                                            </div>
+                                            ===============================<br>
+                                            <div style="width: 300px">
+                                                <span style="display: flex; justify-content: space-between">
+
+                                                <span style="width: 75%">
+                                                    TOTAL
+                                                </span> 
+                                                <span style="width: 25%">{{ item.amount | currency: 'S/ ' }}</span>
+                                                </span>
+                                            </div>
+                                            --------------------------------------------------------<br>
+                                            <div style="width: 300px;display: flex; justify-content: center">
+                                                <b>"Año del Fortalecimiento de la Soberanía Nacional".</b> <br>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>
+                                            <button (click)="print_ticket(i)" type="button" class="btn btn-primary">Imprimir</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </td>
+                     </tr>
+                    </tbody>
+                    <tbody *ngIf="payments.length >= 1">
+                        <tr>
+                            <td colspan="3"></td>
+                            <td>Subtotal</td>
+                            <td colspan="2">{{ total_payment | currency: 'S/ ' }}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"></td>
+                            <td>Deuda</td>
+                            <td colspan="2">{{ total_deuda | currency: 'S/ ' }}</td>
+                        </tr>
+                        <tr *ngIf="total_deuda == 0 && inscription.status != 'Aprobado'">
+                            <td colspan="4"></td>
+                            <td colspan="2">
+                                <button (click)="pass_inscription()" class="btn btn-success">Aprobar</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalPayment" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <form (ngSubmit)="register()" [formGroup]="myForm" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Generar pago</h5>
+                <button #closeModal type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Curso</label>
+                            <select formControlName="destination" class="form-control">
+                                <option value="" selected disabled>Seleccionar</option>
+                                <option *ngIf="inscription.matricula >= 1" value="Matricula">Matricula</option>
+                                <option *ngFor="let item of details" [value]="item._id">{{ item.course.title }} {{ item.cycle_room?.room }}</option>
+                            </select>
+                            <small *ngIf="validators('destination')" class="text-danger"> Este campo es obligatorio. </small>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Método</label>
+                            <div class="dropdown">
+                                <button class="btn btn-light dropdown-toggle w-100 text-start" type="button" id="dropdownMethod" data-bs-toggle="dropdown" aria-expanded="true">
+                                    Seleccionar
+                                </button>
+                                <div class="dropdown-menu w-100">
+                                    <a class="dropdown-item" (click)="select_method('Paypal')">
+                                        <img src="assets/images/resources/paypal.png"> Paypal
+                                    </a>
+                                    <a class="dropdown-item" (click)="select_method('Transferencia')">
+                                        <img src="assets/images/resources/transferencia-de-dinero.png"> Transferencia
+                                    </a>
+                                    <a class="dropdown-item" (click)="select_method('Depósito')">
+                                        <img src="assets/images/resources/depositar.png"> Depósito
+                                    </a>
+                                    <a class="dropdown-item" (click)="select_method('Tarjeta Crédito')">
+                                        <img src="assets/images/resources/tarjeta-de-credito.png"> Tarjeta Crédito
+                                    </a>
+                                </div>
+                            </div>
+                            <small *ngIf="validators('method')" class="text-danger">Este campo es obligatorio.</small>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Banco</label>
+                            <div class="dropdown">
+                                <button class="btn btn-light dropdown-toggle w-100 text-start" type="button" id="dropdownBank" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Seleccionar
+                                </button>
+                                <div class="dropdown-menu w-100">
+                                    <a class="dropdown-item" (click)="select_bank('BCP')">
+                                        <img src="assets/images/resources/bcp.png" style="width: 17px;"> BCP
+                                    </a>
+                                    <a class="dropdown-item" (click)="select_bank('BBVA')">
+                                        <img src="assets/images/resources/bbva.png" style="width: 17px;"> BBVA
+                                    </a>
+                                    <a class="dropdown-item" (click)="select_bank('Interbank')">
+                                        <img src="assets/images/resources/interbank.png" style="width: 17px;"> Interbank
+                                    </a>
+                                    <a class="dropdown-item" (click)="select_bank('Santander')">
+                                        <img src="assets/images/resources/santander.png" style="width: 17px;"> Santander
+                                    </a>
+                                </div>
+                            </div>
+                            <small *ngIf="validators('bank')" class="text-danger">Este campo es obligatorio.</small>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Fecha de pago</label>
+                            <input formControlName="date" type="date" class="form-control" >
+                            <small *ngIf="validators('date')" class="text-danger"> Este campo es obligatorio. </small>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Código T</label>
+                            <input formControlName="transaction" type="text" class="form-control" placeholder="ID transacción">
+                            <small *ngIf="validators('transaction')" class="text-danger"> Este campo es obligatorio. </small>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Monto</label>
+                            <input formControlName="amount" type="number" class="form-control" placeholder="Monto pago">
+                            <small *ngIf="validators('amount')" class="text-danger"> Este campo es obligatorio. </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>
+                <button *ngIf="!load_btn" type="submit" class="btn btn-primary">Generar Pago</button>
+                <button *ngIf="load_btn" type="button" class="btn btn-primary" disabled>Generando</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,60 @@
+<div class="card">
+    <div class="card-body">
+       <form (ngSubmit)="register()" [formGroup]="myForm" class="row">
+         
+         <div class="col-md-8">
+            <div class="mb-3">
+               <label class="form-label">Nombre</label>
+               <input formControlName="title" class="form-control" type="text" placeholder="Nombre" />
+               <span *ngIf="validators('title')" class="text-danger">{{ message('title', 'título') }}</span>
+            </div>
+            <div class="mb-3">
+               <label class="form-label">Categoría</label>
+               <select formControlName="category" class="form-control">
+                  <option value="" selected disabled>Seleccionar</option>
+                  <option *ngFor="let item of categories" [value]="item._id">{{ item.title }}</option>
+               </select>
+               <span *ngIf="validators('category')" class="text-danger">{{ message('category', 'categoría') }}</span>
+            </div>
+            <div class="mb-3">
+               <label class="form-label">Tipo</label>
+               <select formControlName="type" class="form-control">
+                  <option value="" selected disabled>Seleccionar</option>
+                  <option value="Físico">Físico</option>
+                  <option value="Digital">Digital</option>
+               </select>
+               <span *ngIf="validators('type')" class="text-danger">{{ message('type', 'tipo') }}</span>
+            </div>
+            <div class="mb-3">
+               <label class="form-label">Variedad</label>
+               <select formControlName="variety" class="form-control">
+                  <option value="" selected disabled>Seleccionar</option>
+                  <option *ngFor="let item of varieties" [value]="item.name">{{ item.name }}</option>
+               </select>
+               <span *ngIf="validators('variety')" class="text-danger">{{ message('variety', 'variedad') }}</span>
+            </div>
+         </div>
+
+         <div class="col-md-4">
+            <div class="mb-3">
+               <label class="form-label">Descripción</label>
+               <textarea formControlName="description" class="form-control" rows="3"></textarea>
+               <span *ngIf="validators('description')" class="text-danger">{{ message('description', 'descripción') }}</span>
+            </div>
+            <div class="avatar-upload">
+               <div class="avatar-edit">
+                   <input (change)="fileChanged($event)" type='file' id="imageUpload" accept=".png, .jpg, .jpeg, .webp" />
+                   <label class="mdi mdi-lead-pencil" for="imageUpload"></label>
+               </div>
+               <div class="avatar-preview">
+                   <div id="imagePreview" style="background-image: url({{ imgSelected }});"></div>
+               </div>
+           </div>
+         </div>
+
+         <div class="mb-3">
+            <app-button-submit [status]="load_btn"></app-button-submit>
+         </div>
+       </form>
+    </div>
+</div>

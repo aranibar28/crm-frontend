@@ -1,0 +1,148 @@
+<div class="card">
+    
+    <div class="card-header">
+        <div class="d-flex justify-content-between">
+            <h5 class="align-self-center m-0">Inventario</h5>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#standard-modal">
+                <i class="mdi mdi-plus-box-outline me-md-1"></i>
+                <span class="d-none d-md-inline">Nuevo Ingreso</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12 col-md-2 mb-2">
+                <label>Producto</label>
+                <input [(ngModel)]="title" name="title" type="text" class="form-control" placeholder="Nombre del Producto">
+            </div>
+            <div class="col-12 col-md-2 mb-2">
+                <label>Fecha Inicio</label>
+                <input [(ngModel)]="from" name="from" type="date" class="form-control">
+            </div>
+            <div class="col-12 col-md-2 mb-2">
+                <label>Fecha Fin</label>
+                <input  [(ngModel)]="to" name="to" type="date" class="form-control">
+            </div>
+            <div class="col-12 col-md-2 mb-2 align-self-end">
+                <button (click)="filter()" type="button" class="btn btn-dark">
+                    <i class="mdi mdi-magnify-expand mx-1"></i>Buscar
+                </button>
+            </div>
+
+            <div class="col-md-4 text-center align-self-center">
+                <span class="text-success">Margen de ganancia al {{ earnings }}% para nuevos ingresos.</span>
+                <a routerLink="/config" class="nav-link text-decoration-underline">[Cambiar margen]</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-centered table-nowrap mb-0">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>SKU</th>
+                        <th>Variedad</th>
+                        <th>Qty</th>
+                        <th>Precio</th>
+                        <th>Fecha</th>
+                        <th class="text-end">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="load_data">
+                    <tr>
+                       <td colspan="100%" class="text-center">
+                          <app-loading></app-loading>
+                       </td>
+                    </tr>
+                 </tbody>
+                <tbody  *ngIf="!load_data">
+                    <tr *ngIf="inventory.length == 0">
+                        <td colspan="100%" class="text-center">
+                           <app-data-found></app-data-found>
+                        </td>
+                     </tr>
+                    <tr *ngFor="let item of inventory">
+                        <td>
+                            <div class="d-flex align-items-center">
+                               <div class="col-auto">
+                                  <img [src]="item.product.image?.secure_url || default_path" class="avatar-sm rounded" alt="file-image">
+                               </div>
+                               <div class="flex-grow-1 ms-2">{{ item.product.title }}</div>
+                            </div>
+                         </td>
+                        <td>{{ item.variety.sku }}</td>
+                        <td>
+                            <div>{{ item.variety.title }}</div>
+                            <span class="text-muted">{{ item.product.type }}</span>
+                        </td>
+                        <td>x{{ item.quantity }}</td>
+                        <td>{{ item.unit_price | currency: 'S/. '}}</td>
+                        <td>{{ item.updated_at | date: 'dd/MM/YY - hh:mm: a' }}</td>
+                        <td class="text-end w100">
+                            <a (click)="delete_item(item)" class="font-18 text-danger" title="Eliminar"><i class="uil uil-trash"></i></a>
+                         </td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="standard-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <form (ngSubmit)="register()" [formGroup]="myForm" class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Nuevo ingreso</h4>
+                <button #closeModal type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+            </div>
+            <div class="modal-body">
+                <section>
+                    <div class="mb-3">
+                        <label class="form-label">Producto:</label>
+                        <select (change)="select_product($event)" formControlName="product" class="form-control">
+                            <option value="" selected disabled>Seleccionar</option>
+                            <option *ngFor="let item of products" [value]="item._id">{{ item.title }}</option>
+                        </select>
+                        <span *ngIf="validators('product')" class="text-danger float-start font-12">Los campos son obligatorios</span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Variedad:</label>
+                        <select formControlName="variety" class="form-control">
+                            <option value="" selected disabled>Seleccionar</option>
+                            <option *ngFor="let item of varieties" [value]="item._id">{{ item.title }}</option>
+                        </select>
+                        <span *ngIf="validators('variety')" class="text-danger float-start font-12">Los campos son obligatorios</span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Cantidad:</label>
+                        <input formControlName="quantity" type="number" class="form-control" placeholder="Cantidad">
+                        <span *ngIf="validators('quantity')" class="text-danger float-start font-12">Los campos son obligatorios</span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Costo unidad:</label>
+                        <input formControlName="unit_price" type="number" class="form-control" placeholder="Costo unidad">
+                        <span *ngIf="validators('unit_price')" class="text-danger float-start font-12">Los campos son obligatorios</span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Proveedor:</label>
+                        <select formControlName="supplier" class="form-control">
+                            <option value="" selected disabled>Seleccionar</option>
+                            <option value="General">General</option>
+                        </select>
+                        <span *ngIf="validators('supplier')" class="text-danger float-start font-12">Los campos son obligatorios</span>
+                    </div>
+                </section>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>
+                <app-button-submit [status]="load_btn"></app-button-submit>
+            </div>
+        </form>
+    </div>
+</div>

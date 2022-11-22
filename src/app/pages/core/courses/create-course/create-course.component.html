@@ -1,0 +1,35 @@
+<div class="card">
+   <div class="card-body">
+      <form (ngSubmit)="register()" [formGroup]="myForm" class="row">
+        
+        <div class="col-md-9">
+           <div class="mb-3">
+              <label class="form-label">Nombre</label><span class="text-danger ms-1">*</span>
+              <input formControlName="title" class="form-control" type="text" placeholder="Nombre" />
+              <span *ngIf="validators('title')" class="text-danger">{{ message('title', 'título') }}</span>
+           </div>
+           <div class="mb-3">
+               <label class="form-label">Descripción</label>
+               <textarea formControlName="description" class="form-control" rows="5"></textarea>
+               <span *ngIf="validators('description')" class="text-danger">{{ message('description', 'descripción') }}</span>
+            </div>
+           <div class="mb-3">
+              <app-button-submit [status]="load_btn"></app-button-submit>
+           </div>
+        </div>
+
+        <div class="col-md-3">
+           <div class="avatar-upload">
+              <div class="avatar-edit">
+                  <input (change)="fileChanged($event)" type='file' id="imageUpload" accept=".png, .jpg, .jpeg, .webp" />
+                  <label class="mdi mdi-lead-pencil" for="imageUpload"></label>
+              </div>
+              <div class="avatar-preview">
+                  <div id="imagePreview" style="background-image: url({{ imgSelected }});"></div>
+              </div>
+          </div>
+        </div>
+
+      </form>
+   </div>
+</div>

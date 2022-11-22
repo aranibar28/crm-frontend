@@ -1,0 +1,78 @@
+<div class="d-flex justify-content-between align-items-center">
+    <h5 class="font-16 m-0">Lista de Correos</h5>
+    <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#standard-modal">Nuevo</button>
+  </div>
+  
+  <ng-container *ngIf="load_data">
+    <div class="text-center">
+      <app-loading></app-loading>
+    </div>
+  </ng-container>
+  
+  <ng-container *ngIf="!load_data">
+    <div *ngIf="this.mails.length == 0" class="text-center m-4">
+       <span>No hay resultados que mostrar.</span>
+    </div>
+    <div class="my-2" *ngIf="this.mails.length >= 1">
+       <div *ngFor="let item of mails | paginate: { itemsPerPage: 4, currentPage: p }" class="card shadow-none border mb-1">
+          <div class="col ps-0">
+             <div class="accordion">
+                <div class="card mb-0">
+                   <div class="card-header">
+                    <a class="d-flex align-items-center pointer text-muted" data-bs-toggle="collapse" [href]="'#ax'+item._id" aria-expanded="true" aria-controls="collapseOne">
+                      <img [src]="item.employee.image?.secure_url || default_path" class="me-2 rounded-circle" width="40">
+                      <div class="d-flex justify-content-between w-100">
+                          <div>
+                            <h5 class="m-0">{{ item.employee.full_name | titlecase }}</h5>
+                            <span class="font-13">{{ item.subject }}</span>
+                          </div>
+                          <small class="fw-normal">{{ item.created_at | time }}</small>
+                      </div>
+                    </a>
+                   </div>
+                   <div [id]="'ax'+item._id" class="collapse">
+                      <div class="card-body">
+                         <div [innerHTML]="item.message | sanitizing"></div>
+                      </div>
+                   </div>
+                </div>
+             </div>
+          </div>
+       </div>
+    </div>
+    <div class="text-center pt-2">
+      <pagination-controls *ngIf="mails.length >= 1" (pageChange)="p = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+    </div>
+  </ng-container>
+  
+  <div id="standard-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+       <form (ngSubmit)="register()" [formGroup]="myForm" class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Registrar Correo</h4>
+            <button #closeModal type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+        </div>
+        <div class="modal-body mx-3">
+            <div class="mb-2">
+              <label class="form-label">Asunto</label>
+              <input formControlName="subject" type="text" class="form-control" />
+              <small *ngIf="validators('subject')" class="text-danger">
+              Este campo es obligatorio.
+              </small>
+            </div>
+            <div class="mb-2">
+              <label class="form-label">Mensaje</label>
+              <tinymce formControlName="message" [config]="config"></tinymce>
+              <small *ngIf="validators('message')" class="text-danger">
+              Este campo es obligatorio.
+              </small>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>
+            <button type="submit" class="btn btn-success">Guardar</button>
+        </div>
+       </form>
+    </div>
+  </div>
+  

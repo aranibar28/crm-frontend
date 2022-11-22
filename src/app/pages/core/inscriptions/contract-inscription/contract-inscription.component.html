@@ -1,0 +1,111 @@
+<div class="container">
+
+    <ng-container *ngIf="load_data">
+        <div class="text-center">Cargando...</div>
+    </ng-container>
+
+    <ng-container *ngIf="!load_data">
+        
+        <ng-container *ngIf="!my_data">
+            NO DATA
+        </ng-container>
+
+        <ng-container *ngIf="my_data">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-widgets">
+                        <a data-bs-toggle="reload"><i class="mdi mdi-refresh pointer ms-1"></i></a>
+                        <a data-bs-toggle="collapse" href="#collapse_card" role="button" aria-expanded="false" aria-controls="collapse_card"><i class="mdi mdi-minus"></i></a>
+                        <a href="#" data-bs-toggle="remove"><i class="mdi mdi-close"></i></a>
+                    </div>
+                    <h5 class="card-title mb-0">CONTRATO</h5>
+                    <div id="collapse_card" class="collapse pt-3 show">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="row">
+                                  <div class="col-12">
+                                      <h4 class="fw-bold text-dark">Basic License</h4>
+                                      <div class="lh-lg">
+                                          <p>Windows 10 automatically downloads and installs updates to make sure your device is secure and up to date. This means you receive the latest fixes and security updates, helping your device run efficiently and stay protected. In most cases, restarting your device completes the update. Make sure your device is plugged in when you know updates will be installed.</p>
+                                      </div>
+                                  </div>
+                                  <div class="col-12">
+                                      <h4 class="fw-bold text-dark">Extended License</h4>
+                                      <div class="lh-lg">
+                                          <p>Windows 10 automatically downloads and installs updates to make sure your device is secure and up to date. This means you receive the latest fixes and security updates, helping your device run efficiently and stay protected. In most cases, restarting your device completes the update. Make sure your device is plugged in when you know updates will be installed.</p>
+                                      </div>
+                                  </div>
+                                </div>
+                                <div class="col-md-5 mx-auto">
+                                  <div *ngIf="inscription.firm">
+                                      <div class="card-body">
+                                          <img [src]="inscription.firm" style="max-width: 100%;">
+                                      </div>
+                                      <div class="card-footer text-center">
+                                          <h4 style="margin-bottom:0px">{{ inscription.customer?.full_name || 'no data' }}</h4>
+                                      </div>
+                                  </div>
+                                </div>
+                              </div>
+                            <div class="col-md-4">
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <b>Código:</b> {{ inscription._id }}
+                                    </li>
+                                    <li class="list-group-item">
+                                        <b>Cliente:</b> {{ inscription.customer?.full_name || 'no data' }}
+                                    </li>
+                                    <li class="list-group-item">
+                                        <b>Asesor:</b> {{ inscription.employee?.full_name || 'no data' }}
+                                    </li>
+                                    <li class="list-group-item">
+                                        <b>Fecha:</b> {{ inscription.created_at | date: 'dd/MM/yyyy' }}
+                                    </li>
+                                    <li class="list-group-item">
+                                        <b>Canal:</b> {{ inscription.channel }}
+                                    </li>
+                                    <li class="list-group-item">
+                                        <b>Origen:</b> {{ inscription.origin }}
+                                    </li>
+                                    <li class="list-group-item">
+                                        <b>Precio:</b> {{ inscription.amount +  inscription.matricula | currency: 'S/ ' }}
+                                    </li>
+                                </ul>
+                                <hr />
+                                <div class="d-grid">
+                                    <button onclick="window.print();" class="btn btn-primary mb-2" type="button" >Imprimir contrato</button>
+                                    <button *ngIf="!inscription.firm" class="btn btn-success mb-2" type="button" data-bs-toggle="modal" [attr.data-bs-target]="'#firmaModal'">Firmar</button>
+                                    <button *ngIf="inscription.firm" class="btn btn-light mb-2" type="button" disabled>Contrato Firmado</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </ng-container>
+</div>
+
+<div class="modal fade" id="firmaModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Firmar contrato</h5>
+                <button #closeModal class="btn-close" type="button" data-bs-dismiss="modal" aria-hidden="true"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="firma_img">
+                <image-drawing
+                    [src]="'assets/images/resources/firm.jpg'"
+                    [borderCss]="'1px solid black'"
+                    [showCancelButton]="false"
+                    [i18n]="i18n"
+                    [drawingSizes]="{small:3, medium: 3, large:3, extra:3}"
+                    outputMimeType="'image/jpeg'"
+                    (save)="save($event)"
+                    (cancel)="cancel()">
+                </image-drawing>
+            </div>
+        </div>
+    </div>
+</div>

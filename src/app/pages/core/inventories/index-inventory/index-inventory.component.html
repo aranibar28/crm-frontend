@@ -1,0 +1,106 @@
+<div class="card">
+    
+    <div class="card-header">
+        <div class="d-flex justify-content-between">
+            <h5>Inventario Automatizado</h5>
+            <div class="d-flex gap-2">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span>Exportar </span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item">Excel</a>
+                        <a class="dropdown-item">CSV</a>
+                    </div>
+                </div>
+                <button routerLink="entry" class="btn btn-primary">
+                    <span class="d-none d-md-inline">Entrada</span>
+                    <i class="mdi mdi-arrow-down-thin ms-md-1 d-md-none"></i>
+                </button>
+                <button routerLink="exit" class="btn btn-danger">
+                    <span class="d-none d-md-inline">Salida</span>
+                    <i class="mdi mdi-arrow-up-thin ms-md-1 d-md-none"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12 col-md-2 mb-2">
+                <label class="form-label">Producto</label>
+                <input [(ngModel)]="filter_text" name="filter_text" type="text" class="form-control" placeholder="Buscar por">
+            </div>
+            <div class="col-12 col-md-2 mb-2">
+                <label class="form-label">Tipo</label>
+                <select [(ngModel)]="filter_type" name="filter_type" class="form-control">
+                    <option value="Todos" selected>Todos</option>
+                    <option value="Físico">Físico</option>
+                    <option value="Digital">Digital</option>
+                </select>
+            </div>
+            <div class="col-12 col-md-2 mb-2">
+                <label class="form-label">Categoría</label>
+                <select [(ngModel)]="filter_category" name="filter_category" class="form-control">
+                    <option value="Todos" selected>Todos</option>
+                    <option *ngFor="let item of categories" [value]="item.title">{{ item.title }}</option>
+                </select>
+            </div>
+            <div class="col-12 col-md-2 mb-2 d-flex gap-2 align-self-end">
+                <button (click)="search()" type="button" class="btn btn-dark w-100"><i class="mdi mdi-magnify"></i></button>
+                <button (click)="refresh()" type="button" class="btn btn-dark w-100"><i class="mdi mdi-refresh"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+       <div class="table-responsive">
+          <table class="table table-sm table-centered table-nowrap">
+             <thead>
+                <tr>
+                   <th class="pointer" (click)="sortby('sku')">SKU <i class="mdi mdi-sort"></i></th>
+                   <th class="pointer" (click)="sortby('product')">Nombre <i class="mdi mdi-sort"></i></th>
+                   <th class="pointer" (click)="sortby('type')">Tipo <i class="mdi mdi-sort"></i></th>
+                   <th class="pointer" (click)="sortby('category')">Categoría <i class="mdi mdi-sort"></i></th>
+                   <th class="pointer" (click)="sortby('variety')">Variedad <i class="mdi mdi-sort"></i></th>
+                   <th class="pointer" (click)="sortby('stock')">Stock <i class="mdi mdi-sort"></i></th>
+                   <th class="pointer" (click)="sortby('price')">Precio <i class="mdi mdi-sort"></i></th>
+                   <th class="pointer" (click)="sortby('updated_at')">Actualizado <i class="mdi mdi-sort"></i></th>
+                </tr>
+             </thead>
+             <tbody *ngIf="load_data">
+                <tr>
+                   <td class="text-center" colspan="100%">
+                       <app-loading></app-loading>
+                   </td>
+               </tr>
+             </tbody>
+             <tbody *ngIf="!load_data">
+                <tr *ngIf="inventory.length == 0">
+                   <td class="text-center" colspan="100%">
+                        <app-data-found></app-data-found>
+                   </td>
+               </tr>
+                <tr *ngFor="let item of inventory | paginate: { itemsPerPage: 10, currentPage: p }, let i = index">
+                   <td>{{ item.sku | uppercase }}</td>
+                   <td>{{ item.product }}</td>
+                   <td>{{ item.type }}</td>
+                   <td>{{ item.category }}</td>
+                   <td>{{ item.variety }}</td>
+                   <td>
+                        <span *ngIf="item.stock > 5" class="text-success">{{ item.stock}}</span>
+                        <span *ngIf="item.stock <= 5" class="text-danger">{{ item.stock}}</span>
+                   </td>
+                   <td>{{ item.price | currency: 'S/. ' }}</td>
+                   <td><i class="uil uil-calender me-1"></i>{{ item.updated_at | date: 'dd/MM/YY - hh:mm: a' }}</td>
+                </tr>
+             </tbody>
+          </table>
+       </div>
+       <div class="d-flex justify-content-center justify-content-md-end">
+          <pagination-controls (pageChange)="p = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+      </div>
+    </div>
+</div>

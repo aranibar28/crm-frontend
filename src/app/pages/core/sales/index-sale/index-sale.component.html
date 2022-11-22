@@ -1,0 +1,102 @@
+<div class="card">
+    
+    <div class="card-header">
+        <div class="d-flex justify-content-between">
+            <h5>Buscar Venta</h5>
+            <div class="d-flex gap-2">
+                <button class="btn btn-success">
+                    <i class="mdi mdi-file-document-outline me-md-1 d-md-none"></i>
+                    <span class="d-none d-md-inline">Exportar</span>
+                </button>
+                <button routerLink="create" class="btn btn-primary">
+                    <i class="mdi mdi-plus-box-outline me-md-1 d-md-none"></i>
+                    <span class="d-none d-md-inline">Nuevo</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12 col-md-2 mb-2">
+                <label class="form-label">Empleado</label>
+                <select [(ngModel)]="employee" name="employee" class="form-control">
+                    <option value="all" selected>Todos</option>
+                    <option *ngFor="let item of employees" [value]="item._id">{{ item.full_name }}</option>
+                </select>
+            </div>
+            <div class="col-12 col-md-2 mb-2">
+                <label class="form-label">Fecha Inicio</label>
+                <input [(ngModel)]="from" name="from" type="date" class="form-control">
+            </div>
+            <div class="col-12 col-md-2 mb-2">
+                <label class="form-label">Fecha Fin</label>
+                <input [(ngModel)]="to" name="to" type="date" class="form-control">
+            </div>
+            <div class="col-12 col-md-2 mb-2 align-self-end">
+                <button (click)="filter()" type="button" class="btn btn-dark w-100">Buscar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+       <div class="table-responsive">
+          <table class="table table-sm table-centered table-nowrap">
+             <thead>
+                <tr>
+                   <th class="pointer" (click)="sortby('_id')">Código Venta <i class="mdi mdi-sort"></i></th>
+                   <th class="pointer" (click)="sortby('customer.full_name')">Cliente <i class="mdi mdi-sort"></i></th>
+                   <th class="pointer" (click)="sortby('bank')">Banco <i class="mdi mdi-sort"></i></th>
+                   <th class="pointer" (click)="sortby('method')">Método <i class="mdi mdi-sort"></i></th>
+                   <th class="pointer" (click)="sortby('amount')">Total <i class="mdi mdi-sort"></i></th>
+                   <th class="pointer" (click)="sortby('status')">Estado <i class="mdi mdi-sort"></i></th>
+                   <th class="pointer" (click)="sortby('created_at')">Fecha <i class="mdi mdi-sort"></i></th>
+                   <th class="text-center">Acciones</th>
+                </tr>
+             </thead>
+             <tbody *ngIf="load_data">
+                <tr>
+                   <td class="text-center" colspan="100%">
+                       <app-loading></app-loading>
+                   </td>
+               </tr>
+             </tbody>
+             <tbody *ngIf="!load_data">
+                <tr *ngIf="sales.length == 0">
+                   <td class="text-center" colspan="100%">
+                       <app-data-found></app-data-found>
+                   </td>
+               </tr>
+                <tr *ngFor="let item of sales | paginate: { itemsPerPage: 5, currentPage: p }">
+                   <td>#{{ item._id | uppercase }}</td>
+                   <td>{{ item.customer?.full_name || 'no data' }}</td>
+                   <td>{{ item.bank }}</td>
+                   <td>{{ item.method }}</td>
+                   <td>{{ item.amount | currency: 'S/. '}}</td>
+                   <td>
+                    <span *ngIf="item.status == 'Aprobado'" class="badge bg-success">Aprobado</span>
+                    <span *ngIf="item.status == 'Procesando'" class="badge bg-warning text-light">Procesando</span>
+                    <span *ngIf="item.status == 'Cancelado'" class="badge bg-danger text-light">Cancelado</span>
+                   </td>
+                   <td><i class="uil uil-calender me-1"></i>{{ item.created_at | date: 'dd/MM/YY - hh:mm: a' }}</td>
+                   <td class="text-center">
+                      <a [routerLink]="['details', item._id]" class="font-18 text-info me-2" title="Detalles"><i class="uil uil-eye"></i></a>
+                      <a (click)="send_email(item._id)" class="font-18 text-warning me-2" title="Pagos"><i class="uil uil-envelope"></i></a>
+                      <ng-container *ngIf="item.status != 'Cancelado'">
+                        <a (click)="cancel_sale(item)" class="font-18 text-danger" title="Cancelar"><i class="uil uil-multiply"></i></a>
+                      </ng-container>
+                      <ng-container *ngIf="item.status == 'Cancelado'">
+                        <a (click)="accept_sale(item)" class="font-18 text-success" title="Aceptar"><i class="uil uil-check"></i></a>
+                      </ng-container>
+                   </td>
+                </tr>
+             </tbody>
+          </table>
+       </div>
+       <div class="d-flex justify-content-center justify-content-md-end">
+          <pagination-controls (pageChange)="p = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+      </div>
+    </div>
+</div>

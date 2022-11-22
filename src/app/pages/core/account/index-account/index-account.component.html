@@ -1,0 +1,128 @@
+<div class="row">
+   <div class="col-12">
+       <div class="card widget-inline">
+           <div class="card-body p-0">
+               <div class="row g-0">
+                   <div class="col-sm-6 col-lg-3">
+                       <div class="card shadow-none m-0">
+                           <div class="card-body text-center">
+                               <i class="dripicons-store text-muted" style="font-size: 24px;"></i>
+                               <h3><span>{{ earnings_year | currency: 'S/. '}}</span></h3>
+                               <p class="text-muted font-15 mb-0">Ingreso Total {{ year }}</p>
+                           </div>
+                       </div>
+                   </div>
+
+                   <div class="col-sm-6 col-lg-3">
+                       <div class="card shadow-none m-0 border-start">
+                           <div class="card-body text-center">
+                               <i class="dripicons-tag text-muted" style="font-size: 24px;"></i>
+                               <h3><span>{{ earnings_month | currency: 'S/. '}}</span></h3>
+                               <p class="text-muted font-15 mb-0">Ingresos del mes</p>
+                               <span class="float-center text-warning font-12">Mes anterior: {{ earnings_month_past | currency: 'S/. '}}</span>
+                           </div>
+                       </div>
+                   </div>
+
+                   <div class="col-sm-6 col-lg-3">
+                       <div class="card shadow-none m-0 border-start">
+                           <div class="card-body text-center">
+                               <i class="dripicons-cart text-muted" style="font-size: 24px;"></i>
+                               <h3><span>{{ count_sales }}</span></h3>
+                               <p class="text-muted font-15 mb-0">Ventas del mes</p>
+                               <span class="float-center text-warning font-12">Mes anterior: {{ count_sales_past }}</span>
+                           </div>
+                       </div>
+                   </div>
+
+                   <div class="col-sm-6 col-lg-3">
+                       <div class="card shadow-none m-0 border-start">
+                           <div class="card-body text-center">
+                               <i class="dripicons-calendar text-muted" style="font-size: 24px;"></i>
+                               <h3><span>{{ count_inscriptions }}</span></h3>
+                               <p class="text-muted font-15 mb-0">Matrículas del mes</p>
+                               <span class="float-center text-warning font-12">Mes anterior: {{ count_inscriptions_past }}</span>
+                           </div>
+                       </div>
+                   </div>
+
+               </div>
+           </div>
+       </div>
+   </div>
+</div>
+
+<div class="row">
+   <div class="col-md-12">
+       <div class="card">
+           <div class="card-body">
+               <h4>Ingresos Mensuales {{ year }}</h4>
+               <div class="row">
+                   <div class="col-12" id="content_chart_4">
+                       <canvas id="myChart_1" height="80"></canvas>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
+   <div class="col-md-6">
+       <div class="card">
+           <div class="card-body">
+               <h4>Rendimiento de Prospeccíon</h4>
+               <div class="row">
+                   <div class="col-12" id="content_chart_2">
+                       <canvas id="myChart_2" height="300"></canvas>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
+   <div class="col-md-6">
+       <div class="card">
+           <div class="card-body">
+               <h4>Rendimiento de Género</h4>
+               <div class="row">
+                   <div class="col-12" id="content_chart_3">
+                       <canvas id="myChart_3" height="300"></canvas>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
+   <div class="col-md-6">
+       <div class="card">
+           <div class="card-body">
+               <h4>TOP 5 Productos más vendidos {{ year }}</h4>
+               <div class="row">
+                   <div class="col-12" id="content_chart_4">
+                       <canvas id="myChart_4" height="300"></canvas>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
+   <div class="col-md-6">
+       <div class="card">
+           <div class="card-body">
+               <h4>TOP 5 Cursos matriculados {{ year }}</h4>
+               <div class="row">
+                   <div class="col-12" id="content_chart_5">
+                       <canvas id="myChart_5" height="300"></canvas>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
+   <div class="col-md-12">
+       <div class="card">
+           <div class="card-body">
+               <h4>TOP 10 Ingresos de Clientes {{ year }}</h4>
+               <div class="row">
+                   <div class="col-12" id="content_chart_6">
+                       <canvas id="myChart_6" height="300"></canvas>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
+</div>

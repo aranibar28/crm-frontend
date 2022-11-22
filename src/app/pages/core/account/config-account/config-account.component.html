@@ -1,0 +1,160 @@
+<div class="card">
+    <div class="card-body">
+
+        <form (ngSubmit)="update()" [formGroup]="myForm">
+            <h5 class="mb-3 text-uppercase bg-light p-2"><i class="mdi mdi-office-building me-1"></i> Datos de la Empresa</h5>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="avatar-upload">
+                        <div class="avatar-edit">
+                            <input (change)="fileChanged($event)" type='file' id="imageUpload" accept=".png, .jpg, .jpeg, .webp" />
+                            <label class="mdi mdi-lead-pencil" for="imageUpload"></label>
+                        </div>
+                        <div class="avatar-preview">
+                            <div id="imagePreview" style="background-image: url({{ imgSelected }});"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">RUC</label>
+                            <input formControlName="ruc" type="text" class="form-control" placeholder="Número de RUC">
+                            <span *ngIf="validators('ruc')" class="text-danger">{{ message('ruc', 'RUC') }}</span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Razón Social</label>
+                            <input formControlName="company" type="text" class="form-control" placeholder="Nombre de la empresa">
+                            <span *ngIf="validators('company')" class="text-danger">{{ message('company', 'nombre') }}</span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Dirección</label>
+                            <input formControlName="address" type="text" class="form-control" placeholder="Dirección">
+                            <span *ngIf="validators('address')" class="text-danger">{{ message('address', 'dirección') }}</span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Teléfono</label>
+                            <input formControlName="phone" type="text" maxlength="9" class="form-control" placeholder="Teléfono">
+                            <span *ngIf="validators('phone')" class="text-danger">{{ message('phone', 'teléfono') }}</span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Slogan</label>
+                            <input formControlName="slogan" type="text" class="form-control" placeholder="Slogan">
+                            <span *ngIf="validators('slogan')" class="text-danger">{{ message('slogan', 'slogan') }}</span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Branding</label>
+                            <input formControlName="branding" type="text" class="form-control" placeholder="Branding" id="color-picker">
+                            <span *ngIf="validators('branding')" class="text-danger">{{ message('branding', 'branding') }}</span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Ganancias producto (%)</label>
+                            <input formControlName="earnings" type="text" class="form-control" placeholder="Ganancias %">
+                            <span *ngIf="validators('earnings')" class="text-danger">{{ message('earnings', 'gananacias %') }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-between align-items-center">
+                <div class="col-md-6">
+                    <span class="text-muted">Ultima actualización: {{ company.updated_at | date: 'dd/MM/yy ∼ hh:mm aa' }}</span>
+                </div>
+                <div class="col-md-2 text-end d-grid">
+                    <app-button-submit [status]="load_btn"></app-button-submit>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="mb-3 text-uppercase bg-light p-2"><i class="mdi mdi-office-building me-1"></i> Configuración</h5>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">Canal</label>
+                    <div class="input-group">
+                        <input #new_channel class="form-control" placeholder="Ingrese una canal" type="text">
+                        <button (click)="add_channel()" class="btn btn-dark" type="button">Agregar</button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-sm table-striped text-center">
+                        <thead class="bg-danger text-white">
+                            <tr>
+                                <th>Canal</th>
+                                <th>Eliminar</th>
+                            </tr>
+                        </thead>
+    
+                        <ng-container *ngIf="load_data">
+                            <tbody>
+                                <td colspan="8"><span>Cargando...</span></td>
+                            </tbody>
+                        </ng-container>
+    
+                        <ng-container *ngIf="!load_data">
+                            <tbody *ngIf="company.channels.length === 0">
+                                <tr>
+                                   <td colspan="3">
+                                      No hay items disponibles.
+                                   </td>
+                                </tr>
+                             </tbody>
+                             <tbody *ngIf="company.channels.length >= 1">
+                                <tr *ngFor="let item of company.channels; let i = index">
+                                   <td>{{ item.name }}</td>
+                                   <td><a (click)="del_channel(i)" class="text-danger"><i class="mdi mdi-trash-can"></i></a></td>
+                                </tr>
+                             </tbody>
+                        </ng-container>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">Variedad</label>
+                    <div class="input-group">
+                        <input #new_variety class="form-control" placeholder="Ingrese una variedad" type="text">
+                        <button (click)="add_variety()" class="btn btn-dark" type="button">Agregar</button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-sm table-striped text-center">
+                        <thead class="bg-danger text-white">
+                            <tr>
+                                <th>Variedad</th>
+                                <th>Eliminar</th>
+                            </tr>
+                        </thead>
+    
+                        <ng-container *ngIf="load_data">
+                            <tbody>
+                                <td colspan="8"><span>Cargando...</span></td>
+                            </tbody>
+                        </ng-container>
+    
+                        <ng-container *ngIf="!load_data">
+                            <tbody *ngIf="company.varieties.length === 0">
+                                <tr>
+                                   <td colspan="3">
+                                      No hay items disponibles.
+                                   </td>
+                                </tr>
+                             </tbody>
+                             <tbody *ngIf="company.varieties.length >= 1">
+                                <tr *ngFor="let item of company.varieties; let i = index">
+                                   <td>{{ item.name }}</td>
+                                   <td><a (click)="del_variety(i)" class="text-danger"><i class="mdi mdi-trash-can"></i></a></td>
+                                </tr>
+                             </tbody>
+                        </ng-container>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

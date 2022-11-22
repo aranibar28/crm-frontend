@@ -1,0 +1,113 @@
+<div class="row">
+
+    <div class="col-md-9">
+       <div class="card">
+          <div class="card-body">
+             <form [formGroup]="myForm" (ngSubmit)="register()">
+             <h5 class="mb-4 text-uppercase"><i class="mdi mdi-account-circle me-1"></i> Información Personal </h5>
+             <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">DNI</label>
+                  <div class="input-group">
+                     <input formControlName="dni" (keypress)="onlyNumber($event)" (paste)="false" type="text" maxlength="8" class="form-control" placeholder="Buscar...">
+                     <button *ngIf="!load_reniec" (click)="search_reniec()" class="input-group-text btn-primary" type="button">
+                        <i class="mdi mdi-magnify mx-2"></i>
+                     </button>
+                     <button *ngIf="load_reniec" class="input-group-text btn-primary" type="button" disabled>
+                        <i class="spinner-border spinner-border-sm mx-2"></i>
+                     </button>
+                  </div>
+                  <div *ngIf="validators('dni')" class="text-danger">{{ message('dni', 'DNI') }}</div>
+                </div>
+                <div class="col-md-6 mb-3">
+                   <label class="form-label">Verificación</label>
+                   <select formControlName="verify" class="form-control">
+                     <option value="" selected>Seleccionar</option>
+                     <option [value]="true">Sí</option>
+                     <option [value]="false">No</option>
+                   </select>
+                   <div *ngIf="validators('verify')" class="text-danger">{{ message('verify', 'verificado') }}</div>
+                </div>
+                <div class="col-md-6 mb-3">
+                   <label class="form-label">Nombres</label>
+                   <input formControlName="first_name" type="text" class="form-control" placeholder="Ingresa un nombre" readonly>
+                   <div *ngIf="validators('first_name')" class="text-danger">{{ message('first_name', 'nombre') }}</div>
+                </div>
+                <div class="col-md-6 mb-3">
+                   <label class="form-label">Apellidos</label>
+                   <input formControlName="last_name" type="text" class="form-control" placeholder="Ingresa un apellido" readonly>
+                   <div *ngIf="validators('last_name')" class="text-danger">{{ message('last_name', 'apellido') }}</div>
+                </div>
+                <div class="col-md-6 mb-3">
+                   <label class="form-label">Correo Electrónico</label>
+                   <input formControlName="email" type="email" class="form-control" placeholder="Ingresa un correo">
+                   <div *ngIf="validators('email')" class="text-danger">{{ message('email', 'correo') }}</div>
+                </div>
+                <div class="col-md-6 mb-3">
+                   <label class="form-label">Password</label>
+                   <input formControlName="password" type="password" class="form-control" placeholder="Ingresa un password">
+                   <div *ngIf="validators('password')" class="text-danger">{{ message('password', 'password') }}</div>
+                </div>
+                <div class="col-md-6 mb-3">
+                   <label class="form-label">Teléfono</label>
+                   <input (keypress)="onlyNumber($event)" formControlName="phone" type="text" maxlength="9" class="form-control" placeholder="Ingresa un Teléfono">
+                   <div *ngIf="validators('phone')" class="text-danger">{{ message('phone', 'teléfono') }}</div>
+                </div>
+                <div class="col-md-6 mb-3">
+                   <label class="form-label">Género</label>
+                   <select formControlName="genre" class="form-control">
+                      <option value="" selected disabled>Seleccionar</option>
+                      <option value="Masculino">Masculino</option>
+                      <option value="Femenino">Femenino</option>
+                   </select>
+                   <div *ngIf="validators('genre')" class="text-danger">{{ message('genre', 'género') }}</div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">País</label>
+                    <select formControlName="country" class="form-control">
+                        <option value="" selected disabled>Seleccionar</option>
+                        <option value="Perú">Perú</option>
+                        <option value="Otros">Otros</option>
+                     </select>
+                    <div *ngIf="validators('country')" class="text-danger">{{ message('country', 'país') }}</div>
+                 </div>
+                 <div class="col-md-6 mb-3">
+                    <label class="form-label">Ciudad</label>
+                    <select formControlName="city" class="form-control">
+                        <option value="" selected disabled>Seleccionar</option>
+                        <option value="Lima">Lima</option>
+                        <option value="Otros">Otros</option>
+                     </select>
+                    <div *ngIf="validators('city')" class="text-danger">{{ message('city', 'ciudad') }}</div>
+                 </div>
+             </div>
+             <div class="d-flex justify-content-between">
+               <div class="d-flex align-items-center">
+                  <span class="text-muted font-13 me-1">Enviar correo de verificación.</span>
+                  <input formControlName="send_verify" [checked]="false" type="checkbox" [id]="'status-verify'" data-switch="success"/>
+                  <label [for]="'status-verify'" [attr.data-on-label]="'Si'" [attr.data-off-label]="'No'"></label>
+               </div>
+               <app-button-submit [status]="load_btn"></app-button-submit>
+             </div>
+             </form>
+          </div>
+       </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-center">
+           <div class="card-body">
+            <div class="avatar-upload">
+                <div class="avatar-edit">
+                    <input (change)="fileChanged($event)" type='file' id="imageUpload" accept=".png, .jpg, .jpeg, .webp" />
+                    <label class="mdi mdi-lead-pencil" for="imageUpload"></label>
+                </div>
+                <div class="avatar-preview">
+                    <div id="imagePreview" style="background-image: url({{ imgSelected }});"></div>
+                </div>
+            </div>
+           </div>
+        </div>
+     </div>
+     
+</div>

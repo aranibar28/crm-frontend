@@ -1,0 +1,89 @@
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12 col-md-2 mb-2">
+                <label class="form-label">Año</label>
+                <select [(ngModel)]="year" name="year" class="form-control">
+                    <option value="" selected disabled>Seleccionar</option>
+                    <option value="2022">2022</option>
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+                </select>
+            </div>
+            <div class="col-12 col-md-2 mb-2">
+                <label class="form-label">Mes</label>
+                <select [(ngModel)]="month" name="month" class="form-control">
+                    <option value="" selected disabled>Seleccionar</option>
+                    <option value="01">Enero</option>
+                    <option value="02">Febrero</option>
+                    <option value="03">Marzo</option>
+                    <option value="04">Abril</option>
+                    <option value="05">Mayo</option>
+                    <option value="06">Junio</option>
+                    <option value="07">Julio</option>
+                    <option value="08">Agosto</option>
+                    <option value="09">Septiembre</option>
+                    <option value="10">Octubre</option>
+                    <option value="11">Noviembre</option>
+                    <option value="12">Diciembre</option>
+                </select>
+            </div>
+            <div class="col-12 col-md-2 mb-2 d-flex gap-2 align-self-end">
+                <button (click)="init_data()" type="button" class="btn btn-dark w-100"><i class="mdi mdi-magnify"></i></button>
+                <button (click)="refresh()" type="button" class="btn btn-dark w-100"><i class="mdi mdi-refresh"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h4>Ingresos por tipo de venta</h4>
+                <div class="row">
+                    <div class="col-12" id="content_chart_7">
+                        <canvas id="myChart_7"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h4>Ingresos por métodos de pago</h4>
+                <div class="row">
+                    <div class="col-12" id="content_chart_8">
+                        <canvas id="myChart_8"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h4>Ingresos de cursos inscritos</h4>
+                <div class="row">
+                    <div class="col-12" id="content_chart_9">
+                        <canvas id="myChart_9"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h4>Ingresos de productos</h4>
+                <div class="row">
+                    <div class="col-12" id="content_chart_10">
+                        <canvas id="myChart_10"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
