@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { PublicService } from 'src/app/services/public.service';
-import Swal from 'sweetalert2';
 import { environment } from 'src/environments/environment';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-update-employee',
@@ -15,11 +15,12 @@ export class UpdateEmployeeComponent implements OnInit {
   public imgSelected: any = 'assets/images/resources/default.png';
   public imgCurrent: any = 'assets/images/resources/default.png';
 
+  public id: string = '';
+  public employee: any = {};
   public load_btn: boolean = false;
   public load_reniec: boolean = false;
   public file: File | undefined;
-  public employee: any = {};
-  public id: string = '';
+  public isAdmin = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -57,6 +58,8 @@ export class UpdateEmployeeComponent implements OnInit {
           }
           if (this.employee.email == environment.email) {
             this.myForm.controls['email'].disable();
+            this.input_password.nativeElement.disabled = true;
+            this.isAdmin = true;
           }
         }
       },

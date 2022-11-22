@@ -52,14 +52,16 @@
                   <div *ngIf="validators('dni')" class="text-danger">{{ message('dni', 'DNI') }}</div>
                 </div>
                 <div class="col-md-6 mb-3">
-                   <label class="form-label">Rol</label>
-                   <select formControlName="role" class="form-control">
-                      <option value="" selected disabled>Seleccionar</option>
-                      <option value="Administrador">Administrador</option>
-                      <option value="Instructor">Instructor</option>
-                      <option value="Asesor">Asesor</option>
-                   </select>
-                   <div *ngIf="validators('role')" class="text-danger">{{ message('role', 'rol') }}</div>
+                     <label class="form-label">Rol</label>
+                     <select formControlName="role" class="form-control" [attr.disabled]="isAdmin ? '' : null">
+                        <option value="" selected disabled>Seleccionar</option>
+                        <option *ngIf="isAdmin" value="Administrador">Administrador</option>
+                        <option value="Asesor">Asesor</option>
+                        <option value="Gerente">Gerente</option>
+                        <option value="Instructor">Instructor</option>
+                        <option value="Vendedor">Vendedor</option>
+                     </select>
+                     <div *ngIf="validators('role')" class="text-danger">{{ message('role', 'rol') }}</div>
                 </div>
                 <div class="col-md-6 mb-3">
                    <label class="form-label">Nombres</label>

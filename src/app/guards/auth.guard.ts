@@ -10,7 +10,8 @@ export class AuthGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(): boolean {
-    if (!this.authService.isAuthenticated(['Administrador'])) {
+    const allowRoles = ['Administrador', 'Gerente', 'Vendedor', 'Instructor'];
+    if (!this.authService.isAuthenticated(allowRoles)) {
       this.authService.clean_localStorage();
       this.router.navigateByUrl('/auth');
       Swal.fire(

@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { PublicService } from 'src/app/services/public.service';
+import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -18,6 +19,7 @@ export class ProfileAccountComponent implements OnInit {
   public load_btn: boolean = false;
   public load_reniec: boolean = false;
   public file: File | undefined;
+  public isAdmin = false;
 
   constructor(
     private employeeService: EmployeeService,
@@ -49,6 +51,11 @@ export class ProfileAccountComponent implements OnInit {
           if (this.employee.image?.secure_url) {
             this.imgSelected = this.employee.image.secure_url;
             this.imgCurrent = this.employee.image.secure_url;
+          }
+          if (this.employee.email == environment.email) {
+            this.myForm.controls['email'].disable();
+            this.input_password.nativeElement.disabled = true;
+            this.isAdmin = true;
           }
         }
       },
