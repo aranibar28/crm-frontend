@@ -24,10 +24,10 @@
                    <select formControlName="role" class="form-control" [attr.disabled]="isAdmin ? '' : null">
                       <option value="" selected disabled>Seleccionar</option>
                       <option *ngIf="isAdmin" value="Administrador">Administrador</option>
-                      <option value="Asesor">Asesor</option>
                       <option value="Gerente">Gerente</option>
-                      <option value="Instructor">Instructor</option>
                       <option value="Vendedor">Vendedor</option>
+                      <option value="Asesor">Asesor</option>
+                      <option value="Instructor">Instructor</option>
                    </select>
                    <div *ngIf="validators('role')" class="text-danger">{{ message('role', 'rol') }}</div>
                 </div>

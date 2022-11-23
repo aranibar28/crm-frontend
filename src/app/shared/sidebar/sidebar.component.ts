@@ -7,10 +7,12 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class SidebarComponent implements OnInit {
   public sidebar: any;
+  public user: any = {};
 
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
+    this.user = JSON.parse(localStorage.getItem('user')!);
     this.sidebar = this.authService.sidebar;
   }
 }

@@ -10,7 +10,7 @@ export class AuthGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(): boolean {
-    const allowRoles = ['Administrador', 'Gerente', 'Vendedor', 'Instructor'];
+    const allowRoles = ['Administrador', 'Gerente', 'Vendedor', 'Asesor'];
     if (!this.authService.isAuthenticated(allowRoles)) {
       this.authService.clean_localStorage();
       this.router.navigateByUrl('/auth');

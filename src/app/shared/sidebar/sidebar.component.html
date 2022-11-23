@@ -12,29 +12,8 @@
    <div class="h-100" id="leftside-menu-container" data-simplebar>
       <ul class="side-nav">
          <li class="side-nav-title side-nav-item">NAVEGACIÓN</li>
-         <li class="side-nav-item" routerLinkActive="menuitem-active">
-            <a data-bs-target="#sidebarDashboard" data-bs-toggle="collapse" aria-expanded="false" class="side-nav-link">
-               <i class="uil-home-alt"></i>
-               <span class="menu-arrow"></span>
-               <span> Dashboard </span>
-            </a>
-            <div id="sidebarDashboard" class="collapse show">
-               <ul class="side-nav-second-level">
-                  <li routerLinkActive="active">
-                     <a routerLink="profile">Mi cuenta</a>
-                  </li>
-                  <li routerLinkActive="active">
-                     <a routerLink="config">Configuración</a>
-                  </li>
-                  <li routerLinkActive="active">
-                     <a routerLink="performance">Rendimiento</a>
-                  </li>
-               </ul>
-            </div>
-         </li>
-         <li class="side-nav-title side-nav-item">SISTEMA</li>
          <ng-container *ngFor="let item of sidebar, let i = index">
-            <li class="side-nav-item" routerLinkActive="menuitem-active">
+            <li *ngIf="item.allowRoles.includes(user.role)" class="side-nav-item" routerLinkActive="menuitem-active">
                <a [attr.data-bs-target]="'#collapse-' + i" data-bs-toggle="collapse" aria-expanded="false" class="side-nav-link">
                <i [class]="item.icon"></i>
                <span> {{ item.title }} </span>

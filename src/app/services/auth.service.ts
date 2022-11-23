@@ -70,10 +70,37 @@ export class AuthService {
     return allowRoles.includes(decodedToken['role']);
   }
 
+  public roles = [
+    ['Administrador', 'Gerente'],
+    ['Vendedor', 'Asesor'],
+    ['Administrador', 'Gerente', 'Vendedor'],
+    ['Administrador', 'Gerente', 'Asesor'],
+  ];
+
   public sidebar: any[] = [
+    {
+      title: 'Dashboard',
+      icon: 'uil-home-alt',
+      allowRoles: this.roles[0],
+      menu: [
+        {
+          title: 'Mi cuenta',
+          path: '/profile',
+        },
+        {
+          title: 'Configuración',
+          path: '/config',
+        },
+        {
+          title: 'Rendimiento',
+          path: '/performance',
+        },
+      ],
+    },
     {
       title: 'Usuarios',
       icon: 'uil-user',
+      allowRoles: this.roles[0],
       menu: [
         {
           title: 'Empleados',
@@ -86,8 +113,31 @@ export class AuthService {
       ],
     },
     {
+      title: 'Dashboard',
+      icon: 'uil-home-alt',
+      allowRoles: this.roles[1],
+      menu: [
+        {
+          title: 'Mi cuenta',
+          path: '/profile',
+        },
+      ],
+    },
+    {
+      title: 'Usuarios',
+      icon: 'uil-user',
+      allowRoles: this.roles[1],
+      menu: [
+        {
+          title: 'Clientes',
+          path: '/customers',
+        },
+      ],
+    },
+    {
       title: 'Ecommerce',
       icon: 'uil-store',
+      allowRoles: this.roles[2],
       menu: [
         {
           title: 'Categorias',
@@ -110,6 +160,7 @@ export class AuthService {
     {
       title: 'Matrículas',
       icon: 'uil-books',
+      allowRoles: this.roles[3],
       menu: [
         {
           title: 'Cursos',
