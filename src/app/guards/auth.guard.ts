@@ -12,7 +12,7 @@ export class AuthGuard implements CanActivate {
 
   canActivate(): boolean {
     if (!this.authService.isAuthenticated(EMPLEADOS)) {
-      this.authService.clean_localStorage();
+      this.authService.cleanLocalStorage();
       this.router.navigateByUrl('/auth');
       Swal.fire('Acceso denegado', 'No hay permisos necesarios', 'warning');
       return false;

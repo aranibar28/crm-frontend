@@ -1,15 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import Swal from 'sweetalert2';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { EmployeeService } from 'src/app/services/employee.service';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
 })
 export class NavbarComponent implements OnInit {
+  @Input() token: string = this.authService.token;
   public default_path = 'assets/images/resources/default.png';
-  public user: any = undefined;
-  public profile_name: string = '';
+  public user: any = {};
 
   constructor(private authService: AuthService) {}
 
@@ -18,13 +26,13 @@ export class NavbarComponent implements OnInit {
   }
 
   is_logged() {
-    if (this.authService.user) {
-      this.user = JSON.parse(localStorage.getItem('user')!);
+    if (this.authService.token) {
+      const helper = new JwtHelperService();
+      let decodedToken = helper.decodeToken(this.token);
+      this.user = decodedToken;
       let name1 = this.user.first_name?.split(' ')[0];
       let name2 = this.user.last_name?.split(' ')[0];
-      this.profile_name = name1 + ' ' + name2;
-    } else {
-      this.user = undefined;
+      this.user.full_name = name1 + ' ' + name2;
     }
   }
 

@@ -4,6 +4,7 @@ import { EmployeeService } from 'src/app/services/employee.service';
 import { PublicService } from 'src/app/services/public.service';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
+import { NavbarComponent } from '../../../../shared/navbar/navbar.component';
 
 @Component({
   selector: 'app-profile-account',
@@ -87,7 +88,7 @@ export class ProfileAccountComponent implements OnInit {
         this.load_btn = false;
         if (res.data) {
           this.init_data();
-          localStorage.setItem('user', JSON.stringify(res.data));
+          localStorage.setItem('token', res.token);
           Swal.fire('Listo', 'Datos actualizados correctamente.', 'success');
         } else {
           Swal.fire('Error', res.msg, 'error');

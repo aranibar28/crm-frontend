@@ -9,7 +9,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class BreadcrumbsComponent implements OnDestroy {
   public title: string = '';
-  public role: string[] = ['Administrador', 'Gerente'];
+  public role: string[] = [];
   public titleSubs$!: Subscription;
 
   constructor(private router: Router, private authService: AuthService) {

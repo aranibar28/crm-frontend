@@ -4,10 +4,10 @@
        <li class="dropdown notification-list">
           <a class="nav-link dropdown-toggle nav-user arrow-none me-0" data-bs-toggle="dropdown" role="button" aria-haspopup="false" aria-expanded="false">
             <span class="account-user-avatar"> 
-                <img [src]="user.image?.secure_url || default_path" alt="user-image" class="rounded-circle">
+                <img [src]="user.image || default_path" alt="user-image" class="rounded-circle">
             </span>
             <span>
-                <span class="account-user-name">{{ profile_name }}</span>
+                <span class="account-user-name">{{ user.full_name }}</span>
                 <span class="account-position">{{ user.role }}</span>
             </span>
           </a>

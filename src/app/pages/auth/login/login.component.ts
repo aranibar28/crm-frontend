@@ -39,7 +39,6 @@ export class LoginComponent implements OnInit {
           this.router.navigateByUrl('/');
           localStorage.setItem('id', data._id);
           localStorage.setItem('token', token);
-          localStorage.setItem('user', JSON.stringify(data));
           Swal.fire('Bienvenido', 'Hola ' + data.full_name, 'success');
         } else {
           Swal.fire('Error', res.msg, 'error');

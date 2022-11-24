@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { AuthService } from 'src/app/services/auth.service';
 import { sidebar } from 'src/app/utils/sidebar';
 
 @Component({
@@ -6,13 +8,14 @@ import { sidebar } from 'src/app/utils/sidebar';
   templateUrl: './sidebar.component.html',
 })
 export class SidebarComponent implements OnInit {
-  public sidebar: any;
-  public user: any = {};
+  public sidebar: any[] = sidebar;
+  public role: string = '';
 
-  constructor() {}
+  constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.user = JSON.parse(localStorage.getItem('user')!);
-    this.sidebar = sidebar;
+    const helper = new JwtHelperService();
+    let decodedToken = helper.decodeToken(this.authService.token);
+    this.role = decodedToken['role'];
   }
 }

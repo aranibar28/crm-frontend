@@ -12,10 +12,6 @@ const base_url = environment.base_url;
 export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
-  get user(): string {
-    return localStorage.getItem('user') || '';
-  }
-
   get token(): string {
     return localStorage.getItem('token') || '';
   }
@@ -30,7 +26,7 @@ export class AuthService {
   }
 
   logout() {
-    this.clean_localStorage();
+    this.cleanLocalStorage();
     this.router.navigateByUrl('/auth');
   }
 
@@ -39,11 +35,9 @@ export class AuthService {
     return this.http.get(url, this.headers);
   }
 
-  clean_localStorage() {
-    const storage = ['id', 'user', 'token'];
-    for (let item of storage) {
-      localStorage.removeItem(item);
-    }
+  cleanLocalStorage() {
+    localStorage.removeItem('id');
+    localStorage.removeItem('token');
   }
 
   isAuthenticated(allowRoles: string[]): boolean {
@@ -56,24 +50,25 @@ export class AuthService {
       var decodedToken = helper.decodeToken(this.token);
 
       if (isExpired) {
-        this.clean_localStorage();
+        this.cleanLocalStorage();
         return false;
       }
 
       if (!decodedToken) {
-        this.clean_localStorage();
+        this.cleanLocalStorage();
         return false;
       }
     } catch (error) {
-      this.clean_localStorage();
+      this.cleanLocalStorage();
       return false;
     }
     return allowRoles.includes(decodedToken['role']);
   }
 
-  isAllowed(role: string[]) {
-    const user = JSON.parse(this.user);
-    if (!role.includes(user.role)) {
+  isAllowed(allowRoles: string[]) {
+    const helper = new JwtHelperService();
+    var decodedToken = helper.decodeToken(this.token);
+    if (!allowRoles.includes(decodedToken['role'])) {
       this.router.navigateByUrl('/not-found');
     }
   }
