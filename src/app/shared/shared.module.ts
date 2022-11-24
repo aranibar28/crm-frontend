@@ -10,6 +10,7 @@ import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
 import { ButtonSubmitComponent } from './button-submit/button-submit.component';
 import { DataFoundComponent } from './data-found/data-found.component';
 import { ButtonBackComponent } from './button-back/button-back.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { ButtonBackComponent } from './button-back/button-back.component';
     ButtonSubmitComponent,
     ButtonBackComponent,
     DataFoundComponent,
+    NotFoundComponent,
   ],
   imports: [
     CommonModule, 
@@ -35,6 +37,7 @@ import { ButtonBackComponent } from './button-back/button-back.component';
     ButtonSubmitComponent,
     ButtonBackComponent,
     DataFoundComponent,
+    NotFoundComponent,
   ],
 })
 export class SharedModule {}
