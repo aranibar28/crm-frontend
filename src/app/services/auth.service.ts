@@ -40,9 +40,10 @@ export class AuthService {
   }
 
   clean_localStorage() {
-    localStorage.removeItem('id');
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
+    const storage = ['id', 'user', 'token'];
+    for (let item of storage) {
+      localStorage.removeItem(item);
+    }
   }
 
   isAuthenticated(allowRoles: string[]): boolean {

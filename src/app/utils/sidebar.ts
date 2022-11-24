@@ -1,15 +1,17 @@
-export const roles = [
-  ['Administrador', 'Gerente'],
-  ['Vendedor', 'Asesor'],
-  ['Administrador', 'Gerente', 'Vendedor'],
-  ['Administrador', 'Gerente', 'Asesor'],
-];
+const roles: any = {
+  ADMINISTRADOR: ['Administrador', 'Gerente'],
+  VENDEDOR: ['Administrador', 'Gerente', 'Vendedor'],
+  INSTRUCTOR: ['Administrador', 'Gerente', 'Instructor'],
+  EMPLEADOS: ['Administrador', 'Gerente', 'Instructor', 'Vendedor'],
+};
+
+export const { ADMINISTRADOR, INSTRUCTOR, VENDEDOR, EMPLEADOS } = roles;
 
 export const sidebar: any[] = [
   {
     title: 'Dashboard',
     icon: 'uil-home-alt',
-    allowRoles: roles[0],
+    allowRoles: EMPLEADOS,
     menu: [
       {
         title: 'Mi cuenta',
@@ -25,10 +27,29 @@ export const sidebar: any[] = [
       },
     ],
   },
+  /*  {
+    title: 'Empresa',
+    icon: 'uil-home-alt',
+    allowRoles: ['NONE'],
+    menu: [
+      {
+        title: 'Configuración',
+        path: '/config',
+      },
+      {
+        title: 'Rendimiento Mensual',
+        path: '/performance',
+      },
+      {
+        title: 'Rendimiento Anual',
+        path: '/performance',
+      },
+    ],
+  }, */
   {
     title: 'Usuarios',
     icon: 'uil-user',
-    allowRoles: roles[0],
+    allowRoles: ADMINISTRADOR,
     menu: [
       {
         title: 'Empleados',
@@ -41,31 +62,9 @@ export const sidebar: any[] = [
     ],
   },
   {
-    title: 'Dashboard',
-    icon: 'uil-home-alt',
-    allowRoles: roles[1],
-    menu: [
-      {
-        title: 'Mi cuenta',
-        path: '/profile',
-      },
-    ],
-  },
-  {
-    title: 'Usuarios',
-    icon: 'uil-user',
-    allowRoles: roles[1],
-    menu: [
-      {
-        title: 'Clientes',
-        path: '/customers',
-      },
-    ],
-  },
-  {
     title: 'Ecommerce',
     icon: 'uil-store',
-    allowRoles: roles[2],
+    allowRoles: VENDEDOR,
     menu: [
       {
         title: 'Categorias',
@@ -88,7 +87,7 @@ export const sidebar: any[] = [
   {
     title: 'Matrículas',
     icon: 'uil-books',
-    allowRoles: roles[3],
+    allowRoles: INSTRUCTOR,
     menu: [
       {
         title: 'Cursos',

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { PublicService } from 'src/app/services/public.service';
 import { CourseService } from 'src/app/services/course.service';
 import { CycleService } from 'src/app/services/cycle.service';
+import { months } from 'src/app/utils/months';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -20,13 +20,12 @@ export class IndexCycleComponent implements OnInit {
   public p: number = 1;
 
   public filter = 'Todos';
-  public months = this.publicService.months;
+  public months = months;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private courseService: CourseService,
-    private cycleService: CycleService,
-    private publicService: PublicService
+    private cycleService: CycleService
   ) {}
 
   ngOnInit(): void {
