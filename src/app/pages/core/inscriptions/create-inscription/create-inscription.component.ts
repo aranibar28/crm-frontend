@@ -6,6 +6,7 @@ import { CustomerService } from 'src/app/services/customer.service';
 import { CycleService } from 'src/app/services/cycle.service';
 import { InscriptionService } from 'src/app/services/inscription.service';
 import { PublicService } from 'src/app/services/public.service';
+import { months } from 'src/app/utils/months';
 import Swal from 'sweetalert2';
 declare var $: any;
 
@@ -21,7 +22,7 @@ export class CreateInscriptionComponent implements OnInit {
   public load_cycles = false;
   public filter_cycle: string = '';
   public filter_customer: string = '';
-  public months = this.publicService.months;
+  public months = months;
 
   public customers: Array<any> = [];
   public courses: Array<any> = [];

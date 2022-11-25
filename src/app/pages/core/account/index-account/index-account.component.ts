@@ -10,15 +10,8 @@ import * as moment from 'moment';
 })
 export class IndexAccountComponent implements OnInit {
   public year = moment().format('YYYY');
-  public earnings_year = 0;
-  public earnings_month = 0;
-  public earnings_month_past = 0;
-
-  public count_sales = 0;
-  public count_sales_past = 0;
-
-  public count_inscriptions = 0;
-  public count_inscriptions_past = 0;
+  public widgets = [];
+  public load_num = true;
 
   public background = [
     'rgba(255, 99, 132, 0.2)',
@@ -55,13 +48,8 @@ export class IndexAccountComponent implements OnInit {
   init_data() {
     this.kpisService.kpi_month_payments().subscribe({
       next: ({ widgets }) => {
-        this.earnings_year = widgets.earnings_year;
-        this.earnings_month = widgets.earnings_month;
-        this.earnings_month_past = widgets.earnings_month_past;
-        this.count_sales = widgets.count_sales;
-        this.count_sales_past = widgets.count_sales_past;
-        this.count_inscriptions = widgets.count_inscriptions;
-        this.count_inscriptions_past = widgets.count_inscriptions_past;
+        this.widgets = widgets;
+        this.load_num = false;
       },
     });
   }

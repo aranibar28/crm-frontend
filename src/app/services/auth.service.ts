@@ -40,8 +40,8 @@ export class AuthService {
     this.router.navigateByUrl('/auth');
   }
 
-  verify_token() {
-    const url = `${base_url}/auth/verify_token`;
+  verify_token(): Observable<any> {
+    const url = `${base_url}/seed/verify_token`;
     return this.http.get(url, this.headers);
   }
 

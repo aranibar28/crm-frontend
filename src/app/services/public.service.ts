@@ -89,19 +89,4 @@ export class PublicService {
       return `El ${title} tiene que tener solo caracteres numéricos.`;
     }
   }
-
-  public months = [
-    'Ene',
-    'Feb',
-    'Mar',
-    'Abr',
-    'May',
-    'Jun',
-    'Jul',
-    'Ago',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dic',
-  ];
 }

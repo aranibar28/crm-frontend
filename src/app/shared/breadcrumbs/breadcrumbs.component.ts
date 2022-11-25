@@ -2,6 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { ActivationEnd, Router } from '@angular/router';
 import { filter, map, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
+import { EMPLEADOS } from 'src/app/utils/sidebar';
 
 @Component({
   selector: 'app-breadcrumbs',
@@ -15,7 +16,7 @@ export class BreadcrumbsComponent implements OnDestroy {
   constructor(private router: Router, private authService: AuthService) {
     this.titleSubs$ = this.get_route_arguments().subscribe(
       ({ title, role }) => {
-        this.role = role;
+        this.role = role || EMPLEADOS;
         this.title = title;
         document.title = `Panel - ${title}`;
         this.authService.isAllowed(this.role);
