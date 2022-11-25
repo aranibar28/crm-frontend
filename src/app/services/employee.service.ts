@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable, BehaviorSubject } from 'rxjs';
+import { map, Observable, ReplaySubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 const base_url = environment.base_url + '/employees';
 
@@ -20,6 +20,16 @@ export class EmployeeService {
 
   get headers() {
     return { headers: { token: this.token } };
+  }
+
+  public mensajero = new ReplaySubject<any>();
+
+  public get recibir() {
+    return this.mensajero.asObservable();
+  }
+
+  public enviar(data: any): void {
+    this.mensajero.next(data.full_name);
   }
 
   create_employee(data: any): Observable<any> {

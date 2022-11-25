@@ -7,7 +7,7 @@
                 <img [src]="user.image || default_path" alt="user-image" class="rounded-circle">
             </span>
             <span>
-                <span class="account-user-name">{{ user.full_name }}</span>
+                <span class="account-user-name">{{ valorEmitido ||  user.full_name | titlecase }}</span>
                 <span class="account-position">{{ user.role }}</span>
             </span>
           </a>

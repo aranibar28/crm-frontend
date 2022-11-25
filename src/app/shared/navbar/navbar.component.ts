@@ -1,13 +1,7 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-import Swal from 'sweetalert2';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import Swal from 'sweetalert2';
 import { EmployeeService } from 'src/app/services/employee.service';
 
 @Component({
@@ -15,24 +9,28 @@ import { EmployeeService } from 'src/app/services/employee.service';
   templateUrl: './navbar.component.html',
 })
 export class NavbarComponent implements OnInit {
-  @Input() token: string = this.authService.token;
   public default_path = 'assets/images/resources/default.png';
   public user: any = {};
+  public valorEmitido = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private employeeService: EmployeeService
+  ) {}
 
   ngOnInit(): void {
     this.is_logged();
+    this.employeeService.recibir.subscribe((res) => {
+      this.valorEmitido = res;
+    });
   }
 
   is_logged() {
     if (this.authService.token) {
       const helper = new JwtHelperService();
-      let decodedToken = helper.decodeToken(this.token);
+      let decodedToken = helper.decodeToken(this.authService.token);
       this.user = decodedToken;
-      let name1 = this.user.first_name?.split(' ')[0];
-      let name2 = this.user.last_name?.split(' ')[0];
-      this.user.full_name = name1 + ' ' + name2;
+      this.user.full_name = this.user.first_name + ' ' + this.user.last_name;
     }
   }
 
