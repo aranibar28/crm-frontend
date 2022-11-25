@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivationEnd } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { Observable, ReplaySubject } from 'rxjs';
+import { Observable, ReplaySubject, filter, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 const base_url = environment.base_url;
 
@@ -16,6 +16,12 @@ export class AuthService {
 
   public emitter(value: string): void {
     this.courier.next(value);
+  }
+
+  public courier2 = new ReplaySubject<string>();
+
+  public emitter2(value: string): void {
+    this.courier2.next(value);
   }
 
   get id(): string {
@@ -75,11 +81,23 @@ export class AuthService {
     return allowRoles.includes(decodedToken['role']);
   }
 
-  isAllowed(allowRoles: string[]) {
+  get role(): string[] {
     const helper = new JwtHelperService();
-    var decodedToken = helper.decodeToken(this.token);
-    if (!allowRoles.includes(decodedToken['role'])) {
-      this.router.navigateByUrl('/not-found');
-    }
+    let decodedToken = helper.decodeToken(this.token);
+    return decodedToken['role'];
+  }
+
+  isAllowed(allowRoles: string[]): boolean {
+    const helper = new JwtHelperService();
+    let decodedToken = helper.decodeToken(this.token);
+    return allowRoles.includes(decodedToken['role']);
+  }
+
+  get_route_arguments() {
+    return this.router.events.pipe(
+      filter((event) => event instanceof ActivationEnd),
+      filter((event: any) => event.snapshot.firstChild == null),
+      map((event: any) => event.snapshot.data)
+    );
   }
 }

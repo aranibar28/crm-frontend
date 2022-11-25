@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CategoryService } from 'src/app/services/category.service';
 import Swal from 'sweetalert2';
+import { AuthService } from 'src/app/services/auth.service';
+import { Subscription } from 'rxjs';
+import { ADMINISTRADOR } from 'src/app/utils/sidebar';
 
 @Component({
   selector: 'app-index-category',
@@ -16,7 +19,13 @@ export class IndexCategoryComponent implements OnInit {
   public keyword: string = '';
   public p: number = 1;
 
-  constructor(private categoryService: CategoryService) {}
+  public roles: string[] = this.authService.role;
+  public allow: boolean = ADMINISTRADOR.includes(this.roles);
+
+  constructor(
+    private categoryService: CategoryService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.init_data();
@@ -53,7 +62,7 @@ export class IndexCategoryComponent implements OnInit {
           if (res.data) {
             this.p = 1;
             this.init_data();
-            Swal.fire('Listo!', `Categoría ${name} eliminada.`, 'success');
+            Swal.fire('Listo!', `${item.title} eliminada.`, 'success');
           } else {
             Swal.fire('Error!', res.msg, 'error');
           }
