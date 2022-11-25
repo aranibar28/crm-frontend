@@ -11,17 +11,14 @@ import { EmployeeService } from 'src/app/services/employee.service';
 export class NavbarComponent implements OnInit {
   public default_path = 'assets/images/resources/default.png';
   public user: any = {};
-  public valorEmitido = '';
+  public valueEmitted = '';
 
-  constructor(
-    private authService: AuthService,
-    private employeeService: EmployeeService
-  ) {}
+  constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
     this.is_logged();
-    this.employeeService.recibir.subscribe((res) => {
-      this.valorEmitido = res;
+    this.authService.courier.subscribe((item) => {
+      this.valueEmitted = item;
     });
   }
 

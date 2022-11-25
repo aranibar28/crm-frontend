@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { JwtHelperService } from '@auth0/angular-jwt';
 const base_url = environment.base_url;
@@ -11,6 +11,12 @@ const base_url = environment.base_url;
 })
 export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
+
+  public courier = new ReplaySubject<string>();
+
+  public emitter(value: string): void {
+    this.courier.next(value);
+  }
 
   get token(): string {
     return localStorage.getItem('token') || '';

@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EmployeeService } from 'src/app/services/employee.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { PublicService } from 'src/app/services/public.service';
+import { EmployeeService } from 'src/app/services/employee.service';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 
@@ -22,6 +23,7 @@ export class ProfileAccountComponent implements OnInit {
   public isAdmin = false;
 
   constructor(
+    private authService: AuthService,
     private employeeService: EmployeeService,
     private publicService: PublicService,
     private fb: FormBuilder
@@ -88,7 +90,7 @@ export class ProfileAccountComponent implements OnInit {
         if (res.data) {
           this.init_data();
           localStorage.setItem('token', res.token);
-          this.employeeService.enviar(res.data);
+          this.authService.emitter(res.data.full_name);
           Swal.fire('Listo', 'Datos actualizados correctamente.', 'success');
         } else {
           Swal.fire('Error', res.msg, 'error');
