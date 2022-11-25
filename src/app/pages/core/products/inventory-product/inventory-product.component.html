@@ -2,8 +2,8 @@
     
     <div class="card-header">
         <div class="d-flex justify-content-between">
-            <h5 class="align-self-center m-0">Inventario</h5>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#standard-modal">
+            <h5 [ngClass]="{ 'my-1': !allow }" class="align-self-center m-0">Inventario</h5>
+            <button *ngIf="allow" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#standard-modal">
                 <i class="mdi mdi-plus-box-outline me-md-1"></i>
                 <span class="d-none d-md-inline">Nuevo Ingreso</span>
             </button>
@@ -13,16 +13,16 @@
     <div class="card-body">
         <div class="row">
             <div class="col-12 col-md-2 mb-2">
-                <label>Producto</label>
+                <label class="form-label">Producto</label>
                 <input [(ngModel)]="title" name="title" type="text" class="form-control" placeholder="Nombre del Producto">
             </div>
             <div class="col-12 col-md-2 mb-2">
-                <label>Fecha Inicio</label>
+                <label class="form-label">Fecha Inicio</label>
                 <input [(ngModel)]="from" name="from" type="date" class="form-control">
             </div>
             <div class="col-12 col-md-2 mb-2">
-                <label>Fecha Fin</label>
-                <input  [(ngModel)]="to" name="to" type="date" class="form-control">
+                <label class="form-label">Fecha Fin</label>
+                <input [(ngModel)]="to" name="to" type="date" class="form-control">
             </div>
             <div class="col-12 col-md-2 mb-2 align-self-end">
                 <button (click)="filter()" type="button" class="btn btn-dark">
@@ -30,7 +30,7 @@
                 </button>
             </div>
 
-            <div class="col-md-4 text-center align-self-center">
+            <div *ngIf="allow" lass="col-md-4 text-center align-self-center">
                 <span class="text-success">Margen de ganancia al {{ earnings }}% para nuevos ingresos.</span>
                 <a routerLink="/config" class="nav-link text-decoration-underline">[Cambiar margen]</a>
             </div>
@@ -50,7 +50,7 @@
                         <th>Qty</th>
                         <th>Precio</th>
                         <th>Fecha</th>
-                        <th class="text-end">Acciones</th>
+                        <th *ngIf="allow" class="text-end">Acciones</th>
                     </tr>
                 </thead>
                 <tbody *ngIf="load_data">
@@ -83,7 +83,7 @@
                         <td>x{{ item.quantity }}</td>
                         <td>{{ item.unit_price | currency: 'S/. '}}</td>
                         <td>{{ item.updated_at | date: 'dd/MM/YY - hh:mm: a' }}</td>
-                        <td class="text-end w100">
+                        <td *ngIf="allow" class="text-end w100">
                             <a (click)="delete_item(item)" class="font-18 text-danger" title="Eliminar"><i class="uil uil-trash"></i></a>
                          </td>
                     </tr>

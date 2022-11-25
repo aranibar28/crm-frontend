@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductService } from 'src/app/services/product.service';
 import { PublicService } from 'src/app/services/public.service';
+import { AuthService } from 'src/app/services/auth.service';
 import * as moment from 'moment';
 import Swal from 'sweetalert2';
 
@@ -12,6 +13,8 @@ import Swal from 'sweetalert2';
 export class InventoryProductComponent implements OnInit {
   @ViewChild('closeModal') closeModal!: ElementRef;
   public default_path = 'assets/images/resources/default.png';
+  public allow: boolean = this.authService.isAdmin;
+
   public products: Array<any> = [];
   public varieties: Array<any> = [];
   public inventory: Array<any> = [];
@@ -27,6 +30,7 @@ export class InventoryProductComponent implements OnInit {
   constructor(
     private productService: ProductService,
     private publicService: PublicService,
+    private authService: AuthService,
     private fb: FormBuilder
   ) {}
 

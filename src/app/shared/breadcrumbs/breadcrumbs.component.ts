@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationStart, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { EMPLEADOS } from 'src/app/utils/sidebar';
@@ -17,10 +17,10 @@ export class BreadcrumbsComponent implements OnDestroy {
       .get_route_arguments()
       .subscribe(({ title, role }) => {
         this.title = title;
-        document.title = `Panel - ${title}`;
+        document.title = 'Panel - ' + title;
         const allow = this.authService.isAllowed(role || EMPLEADOS);
         if (!allow) {
-          this.router.navigateByUrl('/not-found');
+          this.router.navigateByUrl('not-found');
         }
       });
   }

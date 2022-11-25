@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CategoryService } from 'src/app/services/category.service';
-import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/services/auth.service';
-import { Subscription } from 'rxjs';
-import { ADMINISTRADOR } from 'src/app/utils/sidebar';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-index-category',
@@ -11,6 +9,8 @@ import { ADMINISTRADOR } from 'src/app/utils/sidebar';
 })
 export class IndexCategoryComponent implements OnInit {
   public default_path = 'assets/images/resources/default.png';
+  public allow: boolean = this.authService.isAdmin;
+
   public categories: Array<any> = [];
   public categories_arr: Array<any> = [];
 
@@ -18,9 +18,6 @@ export class IndexCategoryComponent implements OnInit {
   public toggle: boolean = false;
   public keyword: string = '';
   public p: number = 1;
-
-  public roles: string[] = this.authService.role;
-  public allow: boolean = ADMINISTRADOR.includes(this.roles);
 
   constructor(
     private categoryService: CategoryService,

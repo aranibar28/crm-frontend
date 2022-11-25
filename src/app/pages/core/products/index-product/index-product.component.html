@@ -8,7 +8,7 @@
                   <i class="mdi mdi-file-document-outline me-md-1 d-md-none"></i>
                   <span class="d-none d-md-inline">Inventario</span>
                 </button>
-                <button routerLink="create" class="btn btn-primary">
+                <button *ngIf="allow" routerLink="create" class="btn btn-primary">
                   <i class="mdi mdi-plus-box-outline me-md-1 d-md-none"></i>
                   <span class="d-none d-md-inline">Nuevo</span>
                 </button>
@@ -55,9 +55,9 @@
                    <th class="pointer" (click)="sortby('type')">Tipo <i class="mdi mdi-sort"></i></th>
                    <th class="pointer" (click)="sortby('stock')">Stock <i class="mdi mdi-sort"></i></th>
                    <th class="pointer" (click)="sortby('price')">Precio <i class="mdi mdi-sort"></i></th>
-                   <th class="pointer" (click)="sortby('status')">Estado <i class="mdi mdi-sort"></i></th>
+                   <th *ngIf="allow" class="pointer" (click)="sortby('status')">Estado <i class="mdi mdi-sort"></i></th>
                    <th class="pointer" (click)="sortby('created_at')">Creado <i class="mdi mdi-sort"></i></th>
-                   <th class="text-end">Acciones</th>
+                   <th *ngIf="allow" class="text-end">Acciones</th>
                 </tr>
              </thead>
              <tbody *ngIf="load_data">
@@ -86,7 +86,7 @@
                    <td>{{ item.type }}</td>
                    <td>{{ item.stock }} unid.</td>
                    <td>{{ item.price | currency: 'S/. ' }}</td>
-                   <td>
+                   <td *ngIf="allow">
                       <input (change)="change_status($event,item._id)" [checked]="item.status" type="checkbox" [id]="'status-' + item._id" data-switch="success"/>
                       <label [for]="'status-' + item._id" [attr.data-on-label]="'Si'" [attr.data-off-label]="'No'"></label>
                    </td>
@@ -94,7 +94,7 @@
                      <div><i class="uil uil-calender me-1"></i>{{ item.created_at | date: 'dd/MM/yy, hh:mm a' }}</div>
                      <div><i class="uil uil-sync me-1"></i>{{ item.updated_at | date: 'dd/MM/yy, hh:mm a' }}</div>
                    </td>
-                   <td class="text-end">
+                   <td *ngIf="allow" class="text-end">
                       <a [routerLink]="['update', item._id]" class="font-18 text-info me-2" title="Editar"><i class="uil uil-pen"></i></a>
                       <a (click)="delete_item(item)" class="font-18 text-danger" title="Eliminar"><i class="uil uil-trash"></i></a>
                    </td>

@@ -4,6 +4,7 @@ import { Router, ActivationEnd } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable, ReplaySubject, filter, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { ADMINISTRADOR } from 'src/app/utils/sidebar';
 const base_url = environment.base_url;
 
 @Injectable({
@@ -16,12 +17,6 @@ export class AuthService {
 
   public emitter(value: string): void {
     this.courier.next(value);
-  }
-
-  public courier2 = new ReplaySubject<string>();
-
-  public emitter2(value: string): void {
-    this.courier2.next(value);
   }
 
   get id(): string {
@@ -83,14 +78,16 @@ export class AuthService {
 
   get role(): string[] {
     const helper = new JwtHelperService();
-    let decodedToken = helper.decodeToken(this.token);
+    const decodedToken = helper.decodeToken(this.token);
     return decodedToken['role'];
   }
 
-  isAllowed(allowRoles: string[]): boolean {
-    const helper = new JwtHelperService();
-    let decodedToken = helper.decodeToken(this.token);
-    return allowRoles.includes(decodedToken['role']);
+  get isAdmin(): boolean {
+    return ADMINISTRADOR.includes(this.role);
+  }
+
+  isAllowed(allowRoles: any[]): boolean {
+    return allowRoles.includes(this.role);
   }
 
   get_route_arguments() {

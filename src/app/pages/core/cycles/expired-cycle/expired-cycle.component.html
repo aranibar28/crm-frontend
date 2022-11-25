@@ -17,7 +17,7 @@
                </select>
             </div>
             <div class="d-flex justify-content-center gap-2">
-               <button [routerLink]="['/courses/cycles/'+ this.id +'/create']"  type="button" class="btn btn-success">Nuevo Ciclo</button>
+               <button *ngIf="allow" [routerLink]="['/courses/cycles/'+ this.id +'/create']"  type="button" class="btn btn-success">Nuevo Ciclo</button>
                <button routerLink="/courses" class="btn btn-dark">
                   <i class="mdi mdi-arrow-left-top me-md-1"></i>
                   <span>Regresar</span>
@@ -39,7 +39,7 @@
                <!-- START: INFORMACIÓN DEL CURSO -->
                <div class="bg-light shadow-none border rounded text-dark py-2 px-4">
                   <div class="row">
-                     <div class="col-md-3 text-center text-md-start">
+                     <div [ngClass]="{ 'col-md-5': !allow }" class="col-md-3 text-center text-md-start">
                         <div class="d-md-flex align-items-center">
                            <div class="col-auto">
                               <img [src]="course.image?.secure_url || default_path" class="avatar-sm rounded" alt="file-image">
@@ -51,7 +51,7 @@
                            </div>
                         </div>
                      </div>
-                     <div class="col-md-3 text-center text-md-start">
+                     <div [ngClass]="{ 'col-md-5': !allow }" class="col-md-3 text-center text-md-start">
                         <div>Sede: {{ item.cycle.sede }}</div>
                         <div>
                            Ciclos:
@@ -63,7 +63,7 @@
                         </div>
                         Del {{ item.cycle.start_date | date: 'dd/MM/yy' }} hasta {{ item.cycle.final_date | date: 'dd/MM/yy' }}
                      </div>
-                     <div class="col-md-2 align-self-center text-center text-md-start">
+                     <div *ngIf="allow" class="col-md-2 align-self-center text-center text-md-start">
                         <div>Publicación</div>
                         <input (change)="change_status($event,item.cycle._id)" [checked]="item.cycle.status" type="checkbox" [id]="'status-' + item.cycle._id" data-switch="success"/>
                         <label [for]="'status-' + item.cycle._id" [attr.data-on-label]="'Si'" [attr.data-off-label]="'No'"></label>
@@ -72,7 +72,7 @@
                         <div><i class="uil uil-calender me-1"></i>{{ item.cycle.created_at | date: 'dd/MM/yy - hh:mm a' }}</div>
                         <div><i class="uil uil-sync me-1"></i>{{ item.cycle.updated_at | date: 'dd/MM/yy - hh:mm a' }}</div>
                      </div>
-                     <div class="col-md-2 align-self-center text-center text-md-end">
+                     <div *ngIf="allow" class="col-md-2 align-self-center text-center text-md-end">
                         <a [routerLink]="['/courses/cycles/'+ this.id +'/update', item.cycle._id]" class="btn btn-warning btn-sm"><i class="mdi mdi-lead-pencil"></i></a>
                         <a (click)="delete_item(item)" class="btn btn-danger btn-sm ms-2"><i class="mdi mdi-delete"></i></a>
                      </div>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CourseService } from 'src/app/services/course.service';
+import { AuthService } from 'src/app/services/auth.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -8,6 +9,8 @@ import Swal from 'sweetalert2';
 })
 export class IndexCourseComponent implements OnInit {
   public default_path = 'assets/images/resources/default.png';
+  public allow: boolean = this.authService.isAdmin;
+
   public courses: Array<any> = [];
   public courses_arr: Array<any> = [];
 
@@ -16,7 +19,10 @@ export class IndexCourseComponent implements OnInit {
   public sort = false;
   public p: number = 1;
 
-  constructor(public courseService: CourseService) {}
+  constructor(
+    public courseService: CourseService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.init_data();

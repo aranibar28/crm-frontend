@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CourseService } from 'src/app/services/course.service';
 import { CycleService } from 'src/app/services/cycle.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { months } from 'src/app/utils/months';
 import Swal from 'sweetalert2';
 
@@ -11,6 +12,8 @@ import Swal from 'sweetalert2';
 })
 export class IndexCycleComponent implements OnInit {
   public default_path = 'assets/images/resources/default.png';
+  public allow: boolean = this.authService.isAdmin;
+
   public load_data: boolean = true;
   public load_btn: boolean = false;
   public id: any;
@@ -25,7 +28,8 @@ export class IndexCycleComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private courseService: CourseService,
-    private cycleService: CycleService
+    private cycleService: CycleService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {

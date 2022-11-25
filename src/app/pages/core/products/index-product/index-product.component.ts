@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from 'src/app/services/product.service';
 import { CategoryService } from 'src/app/services/category.service';
+import { AuthService } from 'src/app/services/auth.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -9,6 +10,8 @@ import Swal from 'sweetalert2';
 })
 export class IndexProductComponent implements OnInit {
   public default_path = 'assets/images/resources/default.png';
+  public allow: boolean = this.authService.isAdmin;
+
   public products: Array<any> = [];
   public products_arr: Array<any> = [];
   public categories: Array<any> = [];
@@ -23,7 +26,8 @@ export class IndexProductComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
