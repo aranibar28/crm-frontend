@@ -5,6 +5,7 @@ import { EmployeeService } from 'src/app/services/employee.service';
 import { PublicService } from 'src/app/services/public.service';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-update-employee',
@@ -16,6 +17,8 @@ export class UpdateEmployeeComponent implements OnInit {
   public imgCurrent: any = 'assets/images/resources/default.png';
 
   public id: string = '';
+  public current_id: string = this.authService.id;
+
   public employee: any = {};
   public load_btn: boolean = false;
   public load_reniec: boolean = false;
@@ -26,6 +29,7 @@ export class UpdateEmployeeComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private employeeService: EmployeeService,
     private publicService: PublicService,
+    private authService: AuthService,
     private router: Router,
     private fb: FormBuilder
   ) {}
@@ -90,7 +94,10 @@ export class UpdateEmployeeComponent implements OnInit {
       next: (res) => {
         this.load_btn = false;
         if (res.data) {
-          this.init_data();
+          if (this.id == this.current_id) {
+            localStorage.setItem('token', res.token);
+            this.authService.emitter(res.data.full_name);
+          }
           this.router.navigateByUrl('/employees');
           Swal.fire('Listo', 'Datos actualizados correctamente.', 'success');
         } else {
