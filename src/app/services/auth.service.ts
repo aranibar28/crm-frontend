@@ -32,35 +32,38 @@ export class AuthService {
     }
     try {
       const helper = new JwtHelperService();
-      var isExpired = helper.isTokenExpired(this.token);
-      var decodedToken = helper.decodeToken(this.token);
+      const decodeToken = helper.decodeToken(this.token);
+      const isTokenExpired = helper.isTokenExpired(this.token);
 
-      if (isExpired) {
+      if (!decodeToken) {
         localStorage.removeItem('token');
         return false;
       }
 
-      if (!decodedToken) {
+      if (isTokenExpired) {
         localStorage.removeItem('token');
         return false;
       }
+
+      return allowRoles.includes(decodeToken['role']);
     } catch (error) {
       localStorage.removeItem('token');
       return false;
     }
-    return allowRoles.includes(decodedToken['role']);
+  }
+
+  get payload(): any {
+    const helper = new JwtHelperService();
+    const decodeToken = helper.decodeToken(this.token);
+    return decodeToken;
   }
 
   get id(): string {
-    const helper = new JwtHelperService();
-    const decodedToken = helper.decodeToken(this.token);
-    return decodedToken['sub'];
+    return this.payload['sub'];
   }
 
   get role(): string[] {
-    const helper = new JwtHelperService();
-    const decodedToken = helper.decodeToken(this.token);
-    return decodedToken['role'];
+    return this.payload['role'];
   }
 
   get isAdmin(): boolean {

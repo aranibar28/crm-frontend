@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-import { JwtHelperService } from '@auth0/angular-jwt';
-import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-navbar',
@@ -24,9 +23,7 @@ export class NavbarComponent implements OnInit {
 
   is_logged() {
     if (this.authService.token) {
-      const helper = new JwtHelperService();
-      let decodedToken = helper.decodeToken(this.authService.token);
-      this.user = decodedToken;
+      this.user = this.authService.payload;
       this.user.full_name = this.user.first_name + ' ' + this.user.last_name;
     }
   }
