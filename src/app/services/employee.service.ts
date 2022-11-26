@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 const base_url = environment.base_url + '/employees';
 
@@ -9,10 +9,6 @@ const base_url = environment.base_url + '/employees';
 })
 export class EmployeeService {
   constructor(private http: HttpClient) {}
-
-  get id(): string {
-    return localStorage.getItem('id') || '';
-  }
 
   get token(): string {
     return localStorage.getItem('token') || '';

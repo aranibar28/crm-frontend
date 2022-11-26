@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { PublicService } from 'src/app/services/public.service';
 import { CourseService } from 'src/app/services/course.service';
+import { validation } from 'src/app/utils/validation';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -17,7 +17,6 @@ export class CreateCourseComponent implements OnInit {
 
   constructor(
     private courseService: CourseService,
-    private publicService: PublicService,
     private fb: FormBuilder,
     private router: Router
   ) {}
@@ -64,7 +63,7 @@ export class CreateCourseComponent implements OnInit {
   }
 
   message(item: string, title: string) {
-    return this.publicService.validation(item, title, this.myForm);
+    return validation(item, title, this.myForm);
   }
 
   fileChanged(event: any) {

@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { PublicService } from 'src/app/services/public.service';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { environment } from 'src/environments/environment';
+import { validation } from 'src/app/utils/validation';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -15,7 +16,7 @@ export class ProfileAccountComponent implements OnInit {
   public imgSelected: any = 'assets/images/resources/default.png';
   public imgCurrent: any = 'assets/images/resources/default.png';
 
-  public id: string = this.employeeService.id;
+  public id: string = this.authService.id;
   public employee: any = {};
   public load_btn: boolean = false;
   public load_reniec: boolean = false;
@@ -138,7 +139,7 @@ export class ProfileAccountComponent implements OnInit {
   }
 
   message(name: string, title: string) {
-    return this.publicService.validation(name, title, this.myForm);
+    return validation(name, title, this.myForm);
   }
 
   onlyNumber(event: KeyboardEvent) {

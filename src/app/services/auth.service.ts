@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router, ActivationEnd } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { Observable, ReplaySubject, filter, map } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ADMINISTRADOR } from 'src/app/utils/sidebar';
 const base_url = environment.base_url;
@@ -11,16 +10,12 @@ const base_url = environment.base_url;
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient) {}
 
   public courier = new ReplaySubject<string>();
 
   public emitter(value: string): void {
     this.courier.next(value);
-  }
-
-  get id(): string {
-    return localStorage.getItem('id') || '';
   }
 
   get token(): string {
@@ -29,26 +24,6 @@ export class AuthService {
 
   get headers() {
     return { headers: { token: this.token } };
-  }
-
-  login(data: any): Observable<any> {
-    const url = `${base_url}/employees/login_employee`;
-    return this.http.post(url, data);
-  }
-
-  logout() {
-    this.cleanLocalStorage();
-    this.router.navigateByUrl('/auth');
-  }
-
-  verify_token(): Observable<any> {
-    const url = `${base_url}/seed/verify_token`;
-    return this.http.get(url, this.headers);
-  }
-
-  cleanLocalStorage() {
-    localStorage.removeItem('id');
-    localStorage.removeItem('token');
   }
 
   isAuthenticated(allowRoles: string[]): boolean {
@@ -61,19 +36,25 @@ export class AuthService {
       var decodedToken = helper.decodeToken(this.token);
 
       if (isExpired) {
-        this.cleanLocalStorage();
+        localStorage.removeItem('token');
         return false;
       }
 
       if (!decodedToken) {
-        this.cleanLocalStorage();
+        localStorage.removeItem('token');
         return false;
       }
     } catch (error) {
-      this.cleanLocalStorage();
+      localStorage.removeItem('token');
       return false;
     }
     return allowRoles.includes(decodedToken['role']);
+  }
+
+  get id(): string {
+    const helper = new JwtHelperService();
+    const decodedToken = helper.decodeToken(this.token);
+    return decodedToken['sub'];
   }
 
   get role(): string[] {
@@ -90,11 +71,13 @@ export class AuthService {
     return allowRoles.includes(this.role);
   }
 
-  get_route_arguments() {
-    return this.router.events.pipe(
-      filter((event) => event instanceof ActivationEnd),
-      filter((event: any) => event.snapshot.firstChild == null),
-      map((event: any) => event.snapshot.data)
-    );
+  login(data: any): Observable<any> {
+    const url = `${base_url}/employees/login_employee`;
+    return this.http.post(url, data);
+  }
+
+  verify_token(): Observable<any> {
+    const url = `${base_url}/seed/verify_token`;
+    return this.http.get(url, this.headers);
   }
 }

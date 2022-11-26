@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PublicService } from 'src/app/services/public.service';
 import { ProductService } from 'src/app/services/product.service';
 import { CategoryService } from 'src/app/services/category.service';
+import { validation } from 'src/app/utils/validation';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -25,7 +25,6 @@ export class UpdateProductComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private publicService: PublicService,
     private categoryService: CategoryService,
     private productService: ProductService,
     private router: Router,
@@ -184,7 +183,7 @@ export class UpdateProductComponent implements OnInit {
   }
 
   message(item: string, title: string) {
-    return this.publicService.validation(item, title, this.myForm);
+    return validation(item, title, this.myForm);
   }
 
   fileChanged(event: any) {

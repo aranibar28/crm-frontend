@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { PublicService } from 'src/app/services/public.service';
 import { ProductService } from 'src/app/services/product.service';
 import { CategoryService } from 'src/app/services/category.service';
+import { validation } from 'src/app/utils/validation';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -95,7 +96,7 @@ export class CreateProductComponent implements OnInit {
   }
 
   message(item: string, title: string) {
-    return this.publicService.validation(item, title, this.myForm);
+    return validation(item, title, this.myForm);
   }
 
   fileChanged(event: any) {

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomerService } from 'src/app/services/customer.service';
 import { PublicService } from 'src/app/services/public.service';
 import { Router } from '@angular/router';
+import { validation } from 'src/app/utils/validation';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -104,7 +105,7 @@ export class CreateCustomerComponent implements OnInit {
   }
 
   message(name: string, title: string) {
-    return this.publicService.validation(name, title, this.myForm);
+    return validation(name, title, this.myForm);
   }
 
   onlyNumber(event: KeyboardEvent) {

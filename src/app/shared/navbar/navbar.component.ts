@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import Swal from 'sweetalert2';
-import { EmployeeService } from 'src/app/services/employee.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -10,10 +10,10 @@ import { EmployeeService } from 'src/app/services/employee.service';
 })
 export class NavbarComponent implements OnInit {
   public default_path = 'assets/images/resources/default.png';
-  public user: any = {};
   public valueEmitted = '';
+  public user: any = {};
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.is_logged();
@@ -43,7 +43,8 @@ export class NavbarComponent implements OnInit {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.authService.logout();
+        localStorage.removeItem('token');
+        this.router.navigateByUrl('/auth');
       }
     });
   }

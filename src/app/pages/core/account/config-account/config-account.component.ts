@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PublicService } from 'src/app/services/public.service';
+import { validation } from 'src/app/utils/validation';
 import Swal from 'sweetalert2';
 declare var $: any;
 
@@ -139,7 +140,7 @@ export class ConfigAccountComponent implements OnInit {
   }
 
   message(field: string, title: string) {
-    return this.publicService.validation(field, title, this.myForm);
+    return validation(field, title, this.myForm);
   }
 
   fileChanged(event: any) {

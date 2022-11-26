@@ -3,9 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { PublicService } from 'src/app/services/public.service';
-import { environment } from 'src/environments/environment';
-import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/services/auth.service';
+import { environment } from 'src/environments/environment';
+import { validation } from 'src/app/utils/validation';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-update-employee',
@@ -146,7 +147,7 @@ export class UpdateEmployeeComponent implements OnInit {
   }
 
   message(name: string, title: string) {
-    return this.publicService.validation(name, title, this.myForm);
+    return validation(name, title, this.myForm);
   }
 
   onlyNumber(event: KeyboardEvent) {
