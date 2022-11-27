@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
   templateUrl: './login.component.html',
 })
 export class LoginComponent implements OnInit {
+  public email = localStorage.getItem('email' || '');
   public load_btn: boolean = false;
 
   constructor(
@@ -17,11 +18,16 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.email) {
+      this.myForm.patchValue({ email: this.email, remember: true });
+    }
+  }
 
   myForm: FormGroup = this.fb.group({
-    email: ['admin@gmail.com', [Validators.required, Validators.email]],
-    password: ['123456', [Validators.required, Validators.minLength(3)]],
+    email: [, [Validators.required, Validators.email]],
+    password: [, [Validators.required, Validators.minLength(3)]],
+    remember: [false],
   });
 
   login() {
@@ -33,15 +39,20 @@ export class LoginComponent implements OnInit {
     this.load_btn = true;
     this.authService.login(this.myForm.value).subscribe({
       next: (res) => {
-        this.load_btn = false;
         if (res.data) {
+          if (this.myForm.controls['remember'].value) {
+            localStorage.setItem('email', res.data.email);
+          } else {
+            localStorage.removeItem('email');
+          }
           let { data, token } = res;
           this.router.navigateByUrl('/');
           localStorage.setItem('token', token);
-          Swal.fire('Bienvenido', 'Hola ' + data.full_name, 'success');
+          Swal.fire('Bien enido', 'Hola ' + data.full_name, 'success');
         } else {
           Swal.fire('Error', res.msg, 'error');
         }
+        this.load_btn = false;
       },
       error: (err) => {
         this.load_btn = false;

@@ -1,8 +1,7 @@
-import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
+import { Injectable } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { EMPLEADOS } from '../utils/sidebar';
-import Swal from 'sweetalert2';
+import { tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -10,13 +9,14 @@ import Swal from 'sweetalert2';
 export class AuthGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
 
-  canActivate(): boolean {
-    if (!this.authService.isAuthenticated(EMPLEADOS)) {
-      localStorage.removeItem('token');
-      this.router.navigateByUrl('/auth');
-      Swal.fire('Acceso denegado', 'No hay permisos necesarios', 'warning');
-      return false;
-    }
-    return true;
+  canActivate() {
+    return this.authService.isValidateToken().pipe(
+      tap((res) => {
+        if (!res) {
+          localStorage.removeItem('token');
+          this.router.navigateByUrl('/auth');
+        }
+      })
+    );
   }
 }

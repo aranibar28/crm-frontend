@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { Observable, ReplaySubject } from 'rxjs';
+import { Observable, ReplaySubject, map, catchError, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ADMINISTRADOR } from 'src/app/utils/sidebar';
 const base_url = environment.base_url;
@@ -24,6 +24,16 @@ export class AuthService {
 
   get headers() {
     return { headers: { token: this.token } };
+  }
+
+  isValidateToken(): Observable<boolean> {
+    return this.http.get(`${base_url}/employees/renew`, this.headers).pipe(
+      map((res: any) => {
+        localStorage.setItem('token', res.token);
+        return true;
+      }),
+      catchError((error) => of(false))
+    );
   }
 
   isAuthenticated(allowRoles: string[]): boolean {
