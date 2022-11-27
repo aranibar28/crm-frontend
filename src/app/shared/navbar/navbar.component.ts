@@ -10,14 +10,16 @@ import Swal from 'sweetalert2';
 export class NavbarComponent implements OnInit {
   public default_path = 'assets/images/resources/default.png';
   public valueEmitted = '';
+  public imageEmitted = '';
   public user: any = {};
 
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.is_logged();
-    this.authService.courier.subscribe((item) => {
-      this.valueEmitted = item;
+    this.authService.courier.subscribe((res) => {
+      this.valueEmitted = res.value;
+      this.imageEmitted = res.image;
     });
   }
 

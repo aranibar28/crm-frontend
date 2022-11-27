@@ -97,7 +97,10 @@ export class UpdateEmployeeComponent implements OnInit {
         if (res.data) {
           if (this.id == this.current_id) {
             localStorage.setItem('token', res.token);
-            this.authService.emitter(res.data.full_name);
+            this.authService.emitter({
+              value: res.data.full_name,
+              image: res.data.image?.secure_url,
+            });
           }
           this.router.navigateByUrl('/employees');
           Swal.fire('Listo', 'Datos actualizados correctamente.', 'success');

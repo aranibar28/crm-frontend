@@ -1,131 +1,47 @@
-<div class="d-flex flex-column flex-row-fluid">
-    <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
-        <div class="d-flex flex-column-fluid">
+<ng-container *ngIf="!my_data">
+    NO DATA
+ </ng-container>
 
-            <ng-container *ngIf="!my_data">
-               NO DATA
-            </ng-container>
-
-            <form *ngIf="my_data" class="container">
-                <div class="row mt-7 mb-6">
-                    <div class="col-12 text-center">
-                        <h1 class="font-weight-bolder text-dark mb-0">Encuesta de satisfacción</h1>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-6">
-                        <div class="card card-custom gutter-b form-group">
-                            <div class="card-header">
-                                <div class="card-title">
-                                    <h5 class="card-label">¿Cómo calificarías el servicio brindado?</h5>
-                                </div>
-                            </div>
-                            <!--begin::Form-->
-                            <div class="form">
-                                <div class="card-body text-center">
-                                   <label>{{ survey.answ_one }}</label>
-                                </div>
-                                
-                            </div>
-                            <!--end::Form-->
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="card card-custom gutter-b form-group">
-                            <div class="card-header">
-                                <div class="card-title">
-                                    <h5 class="card-label">¿Cómo calificarías al asesor que te atendio?</h5>
-                                </div>
-                            </div>
-                            <!--begin::Form-->
-                            <div class="form">
-                                <div class="card-body text-center">
-                                    <label>{{ survey.answ_two }}</label>
-                                </div>
-                                
-                            </div>
-                            <!--end::Form-->
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-6">
-                        <div class="card card-custom gutter-b form-group">
-                            <div class="card-header">
-                                <div class="card-title">
-                                    <h5 class="card-label">¿Cómo calificarías la experiencia de compra?</h5>
-                                </div>
-                            </div>
-                            <!--begin::Form-->
-                            <div class="form">
-                                <div class="card-body text-center">
-                                    <label>{{ survey.answ_three }}</label>
-                                </div>
-                                
-                            </div>
-                            <!--end::Form-->
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="card card-custom gutter-b form-group">
-                            <div class="card-header">
-                                <div class="card-title">
-                                    <h5 class="card-label">¿Cómo te enteraste del servicio?</h5>
-                                </div>
-                            </div>
-                            <!--begin::Form-->
-                            <div class="form">
-                                <div class="card-body text-center">
-                                    <label>{{ survey.answ_four }}</label>
-                                </div>
-                                
-                            </div>
-                            <!--end::Form-->
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-6">
-                        <div class="card card-custom gutter-b form-group">
-                            <div class="card-header">
-                                <div class="card-title">
-                                    <h5 class="card-label">¿Volverias a adquirir el serivicio nuevamente?</h5>
-                                </div>
-                            </div>
-                            <!--begin::Form-->
-                            <div class="form">
-                                <div class="card-body text-center">
-                                    <label>{{ survey.answ_five }}</label>
-                                </div>
-                                
-                            </div>
-                            <!--end::Form-->
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="card card-custom gutter-b form-group">
-                            <div class="card-header">
-                                <div class="card-title">
-                                    <h5 class="card-label">¿Desde cuando es usted cliente?</h5>
-                                </div>
-                            </div>
-                            <!--begin::Form-->
-                            <div class="form">
-                                <div class="card-body text-center">
-                                    <label>{{ survey.answ_six }}</label>
-                                </div>
-                                
-                            </div>
-                            <!--end::Form-->
-                        </div>
-                    </div>
-                </div>
-                
-            </form>
-     
+ <form *ngIf="my_data" class="container">
+     <div class="row">
+         <div class="col-12 text-center mb-3">
+            <h1 class="text-dark">Encuesta de satisfacción</h1>
+         </div>
+         <div class="col-md-6">
+            <div class="card">
+                <div class="card-header fw-bold">¿Cómo calificarías el servicio brindado?</div>
+                <div class="card-body text-center"><label>{{ survey.answ_one }}</label></div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header fw-bold">¿Cómo calificarías al asesor que te atendio?</div>
+                <div class="card-body text-center"><label>{{ survey.answ_two }}</label></div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header fw-bold">¿Cómo calificarías la experiencia de compra?</div>
+                <div class="card-body text-center"><label>{{ survey.answ_three }}</label></div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header fw-bold">¿Cómo te enteraste del servicio?</div>
+                <div class="card-body text-center"><label>{{ survey.answ_four }}</label></div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header fw-bold">¿Volverias a adquirir el serivicio nuevamente?</div>
+                <div class="card-body text-center"><label>{{ survey.answ_five }}</label></div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header fw-bold">¿Desde cuando es usted cliente?</div>
+                <div class="card-body text-center"><label>{{ survey.answ_six }}</label></div>
+            </div>
         </div>
     </div>
-</div>
+</form>

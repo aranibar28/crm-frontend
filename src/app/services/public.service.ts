@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import Swal from 'sweetalert2';
 const base_url = environment.base_url + '/seed';
 const sunat_url = environment.sunat;
 const token = environment.token;
@@ -65,5 +66,39 @@ export class PublicService {
   read_survey(id: any): Observable<any> {
     const url = `${base_url}/read_survey/${id}`;
     return this.http.get(url, this.headers);
+  }
+
+  uploadImage(event: any): Observable<any> {
+    const file: File = event.target.files[0];
+    const pattern = /image-*/;
+
+    const finished = new Observable((observer) => {
+      observer.next(undefined);
+      observer.complete();
+    });
+
+    if (!file) {
+      return finished;
+    }
+
+    if (!file.type.match(pattern)) {
+      Swal.fire('Error', 'El archivo debe ser una imagen.', 'error');
+      return finished;
+    }
+
+    if (file.size >= 4000000) {
+      Swal.fire('Error', 'La imagen no puede superar los 4MB.', 'error');
+      return finished;
+    }
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    return new Observable((observer: any) => {
+      reader.onloadend = () => {
+        observer.next(reader.result);
+        observer.complete();
+      };
+    });
   }
 }

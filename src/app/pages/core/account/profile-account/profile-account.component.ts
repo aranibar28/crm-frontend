@@ -91,7 +91,10 @@ export class ProfileAccountComponent implements OnInit {
         if (res.data) {
           this.init_data();
           localStorage.setItem('token', res.token);
-          this.authService.emitter(res.data.full_name);
+          this.authService.emitter({
+            value: res.data.full_name,
+            image: res.data.image?.secure_url,
+          });
           Swal.fire('Listo', 'Datos actualizados correctamente.', 'success');
         } else {
           Swal.fire('Error', res.msg, 'error');
@@ -148,27 +151,31 @@ export class ProfileAccountComponent implements OnInit {
 
   fileChanged(event: any) {
     const file: File = event.target.files[0];
+    const pattern: RegExp = /image-*/;
+
     if (!file) {
       this.file = undefined;
       this.imgSelected = this.imgCurrent;
-    } else {
-      if (file.size <= 4000000) {
-        const array = ['image/png', 'image/jpg', 'image/jpeg', 'image/webp'];
-        if (array.includes(file.type)) {
-          const reader = new FileReader();
-          reader.onload = () => (this.imgSelected = reader.result);
-          reader.readAsDataURL(file);
-          this.file = file;
-        } else {
-          this.file = undefined;
-          this.imgSelected = this.imgCurrent;
-          Swal.fire('Error', 'El archivo debe ser una imagen', 'error');
-        }
-      } else {
-        this.file = undefined;
-        this.imgSelected = this.imgCurrent;
-        Swal.fire('Error', 'La imagen no puede superar los 4MB', 'error');
-      }
+      return;
     }
+
+    if (file.size >= 4000000) {
+      this.file = undefined;
+      this.imgSelected = this.imgCurrent;
+      Swal.fire('Error', 'La imagen no puede superar los 4MB.', 'error');
+      return;
+    }
+
+    if (!file.type.match(pattern)) {
+      this.file = undefined;
+      this.imgSelected = this.imgCurrent;
+      Swal.fire('Error', 'El archivo debe ser una imagen.', 'error');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => (this.imgSelected = reader.result);
+    this.file = file;
   }
 }

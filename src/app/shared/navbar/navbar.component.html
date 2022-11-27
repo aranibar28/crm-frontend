@@ -4,7 +4,7 @@
        <li class="dropdown notification-list">
           <a class="nav-link dropdown-toggle nav-user arrow-none me-0" data-bs-toggle="dropdown" role="button" aria-haspopup="false" aria-expanded="false">
             <span class="account-user-avatar"> 
-                <img [src]="user.image || default_path" alt="user-image" class="rounded-circle">
+                <img [src]="imageEmitted || user.image || default_path" alt="user-image" class="rounded-circle">
             </span>
             <span>
                 <span class="account-user-name">{{ valueEmitted ||  user.full_name | titlecase }}</span>

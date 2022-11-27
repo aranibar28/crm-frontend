@@ -12,10 +12,10 @@ const base_url = environment.base_url;
 export class AuthService {
   constructor(private http: HttpClient) {}
 
-  public courier = new ReplaySubject<string>();
+  public courier = new ReplaySubject<any>();
 
-  public emitter(value: string): void {
-    this.courier.next(value);
+  public emitter(res: any): void {
+    this.courier.next(res);
   }
 
   get token(): string {

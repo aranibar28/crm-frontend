@@ -1,10 +1,5 @@
-import {
-  Component,
-  NgZone,
-  OnInit,
-  ViewChild,
-  ElementRef,
-} from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
+import { ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PublicService } from 'src/app/services/public.service';
 import { validation } from 'src/app/utils/validation';
@@ -75,9 +70,7 @@ export class ConfigAccountComponent implements OnInit {
   add_channel() {
     let new_chanel = this.new_channel.nativeElement.value;
     if (new_chanel) {
-      this.company.channels.push({
-        name: new_chanel,
-      });
+      this.company.channels.push({ name: new_chanel });
       this.new_channel.nativeElement.value = '';
     } else {
       Swal.fire('Ups!', 'Debe ingresa el nombre de un canal.', 'error');
@@ -91,9 +84,7 @@ export class ConfigAccountComponent implements OnInit {
   add_variety() {
     let new_variety = this.new_variety.nativeElement.value;
     if (new_variety) {
-      this.company.varieties.push({
-        name: new_variety,
-      });
+      this.company.varieties.push({ name: new_variety });
       this.new_variety.nativeElement.value = '';
     } else {
       Swal.fire('Ups!', 'Debe ingresa el nombre de una variedad.', 'error');
@@ -144,28 +135,14 @@ export class ConfigAccountComponent implements OnInit {
   }
 
   fileChanged(event: any) {
-    const file = event.target.files[0];
-    if (!file) {
-      this.file = undefined;
-      this.imgSelected = this.imgCurrent;
-    } else {
-      if (file.size <= 4000000) {
-        const array = ['image/png', 'image/jpg', 'image/jpeg', 'image/webp'];
-        if (array.includes(file.type)) {
-          const reader = new FileReader();
-          reader.onload = () => (this.imgSelected = reader.result);
-          reader.readAsDataURL(file);
-          this.file = file;
-        } else {
-          this.file = undefined;
-          this.imgSelected = this.imgCurrent;
-          Swal.fire('', 'El archivo debe ser una imagen', 'error');
-        }
+    this.publicService.uploadImage(event).subscribe((res) => {
+      if (res) {
+        this.imgSelected = res;
+        this.file = event.target.files[0];
       } else {
-        this.file = undefined;
         this.imgSelected = this.imgCurrent;
-        Swal.fire('', 'La imagen no puede superar los 4MB', 'error');
+        this.file = undefined;
       }
-    }
+    });
   }
 }

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { PublicService } from 'src/app/services/public.service';
-import jwt_decode from 'jwt-decode';
+import * as moment from 'moment';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -10,8 +11,7 @@ import Swal from 'sweetalert2';
   templateUrl: './survey.component.html',
 })
 export class SurveyComponent implements OnInit {
-  public token = '';
-  public data: any = {};
+  public payload: any = {};
   public expired = false;
   public send = false;
 
@@ -32,13 +32,11 @@ export class SurveyComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(({ token }) => {
-      this.token = token;
-      this.data = jwt_decode(this.token);
-      let today = Date.parse(new Date().toString()) / 1000;
-      if (today >= this.data.exp) {
+      const helper = new JwtHelperService();
+      this.payload = helper.decodeToken(token);
+      let today = moment().unix();
+      if (this.payload.exp <= today) {
         this.expired = true;
-      } else {
-        this.expired = false;
       }
     });
   }
@@ -48,8 +46,8 @@ export class SurveyComponent implements OnInit {
       this.myForm.markAllAsTouched();
       return;
     }
-    const inscription = this.fb.control(this.data.inscription);
-    const customer = this.fb.control(this.data.customer);
+    const inscription = this.fb.control(this.payload.inscription);
+    const customer = this.fb.control(this.payload.customer);
     this.myForm.addControl('inscription', inscription);
     this.myForm.addControl('customer', customer);
 
@@ -59,7 +57,7 @@ export class SurveyComponent implements OnInit {
           this.send = true;
           Swal.fire('Bien!', 'Gracias por completar la encuesta.', 'success');
         } else {
-          Swal.fire('Oh no!', res.msg, 'error');
+          Swal.fire('Oh no!', res.msg, 'info');
         }
       },
     });
