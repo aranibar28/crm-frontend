@@ -45,9 +45,10 @@ export class LoginComponent implements OnInit {
           } else {
             localStorage.removeItem('email');
           }
-          let { data, token } = res;
+          let { data, token, menu } = res;
           this.router.navigateByUrl('/');
           localStorage.setItem('token', token);
+          localStorage.setItem('menu', menu);
           Swal.fire('Bien enido', 'Hola ' + data.full_name, 'success');
         } else {
           Swal.fire('Error', res.msg, 'error');

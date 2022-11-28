@@ -1,8 +1,8 @@
 import { Component, OnDestroy } from '@angular/core';
-import { NavigationStart, Router, ActivationEnd } from '@angular/router';
+import { Router, ActivationEnd } from '@angular/router';
 import { Subscription, filter, map } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
-import { EMPLEADOS } from 'src/app/utils/sidebar';
+import { EMPLEADOS } from 'src/app/utils/roles';
 
 @Component({
   selector: 'app-breadcrumbs',
@@ -19,7 +19,7 @@ export class BreadcrumbsComponent implements OnDestroy {
         document.title = 'Panel - ' + title;
         const allow = this.authService.isAllowed(role || EMPLEADOS);
         if (!allow) {
-          this.router.navigateByUrl('not-found');
+          this.router.navigateByUrl('/');
         }
       }
     );

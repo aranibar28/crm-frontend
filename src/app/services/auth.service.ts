@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable, ReplaySubject, map, catchError, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { ADMINISTRADOR } from 'src/app/utils/sidebar';
+import { ADMINISTRADOR } from 'src/app/utils/roles';
 const base_url = environment.base_url;
 
 @Injectable({
@@ -18,6 +18,10 @@ export class AuthService {
     this.courier.next(res);
   }
 
+  get menu(): string {
+    return localStorage.getItem('menu') || '';
+  }
+
   get token(): string {
     return localStorage.getItem('token') || '';
   }
@@ -30,6 +34,7 @@ export class AuthService {
     return this.http.get(`${base_url}/employees/renew`, this.headers).pipe(
       map((res: any) => {
         localStorage.setItem('token', res.token);
+        localStorage.setItem('menu', res.menu);
         return true;
       }),
       catchError((error) => of(false))
@@ -68,6 +73,12 @@ export class AuthService {
     return decodeToken;
   }
 
+  get sidebar(): any {
+    const helper = new JwtHelperService();
+    const decodeToken = helper.decodeToken(this.menu);
+    return decodeToken;
+  }
+
   get id(): string {
     return this.payload['sub'];
   }
@@ -87,10 +98,5 @@ export class AuthService {
   login(data: any): Observable<any> {
     const url = `${base_url}/employees/login_employee`;
     return this.http.post(url, data);
-  }
-
-  verify_token(): Observable<any> {
-    const url = `${base_url}/seed/verify_token`;
-    return this.http.get(url, this.headers);
   }
 }

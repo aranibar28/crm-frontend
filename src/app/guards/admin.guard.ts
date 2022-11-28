@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { EMPLEADOS } from '../utils/sidebar';
+import { EMPLEADOS } from '../utils/roles';
 import Swal from 'sweetalert2';
 
 @Injectable({

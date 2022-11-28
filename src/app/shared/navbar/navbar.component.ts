@@ -43,6 +43,7 @@ export class NavbarComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         localStorage.removeItem('token');
+        localStorage.removeItem('menu');
         this.router.navigateByUrl('/auth');
       }
     });
