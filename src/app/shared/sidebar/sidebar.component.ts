@@ -6,7 +6,7 @@ import { AuthService } from 'src/app/services/auth.service';
   templateUrl: './sidebar.component.html',
 })
 export class SidebarComponent implements OnInit {
-  public sidebar = this.authService.sidebar;
+  public sidebar = this.authService.menu;
 
   constructor(private authService: AuthService) {}
 

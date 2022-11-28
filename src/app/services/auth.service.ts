@@ -12,14 +12,11 @@ const base_url = environment.base_url;
 export class AuthService {
   constructor(private http: HttpClient) {}
 
+  public menu: any = [];
   public courier = new ReplaySubject<any>();
 
   public emitter(res: any): void {
     this.courier.next(res);
-  }
-
-  get menu(): string {
-    return localStorage.getItem('menu') || '';
   }
 
   get token(): string {
@@ -34,7 +31,7 @@ export class AuthService {
     return this.http.get(`${base_url}/employees/renew`, this.headers).pipe(
       map((res: any) => {
         localStorage.setItem('token', res.token);
-        localStorage.setItem('menu', res.menu);
+        this.menu = res.menu;
         return true;
       }),
       catchError((error) => of(false))
@@ -70,12 +67,6 @@ export class AuthService {
   get payload(): any {
     const helper = new JwtHelperService();
     const decodeToken = helper.decodeToken(this.token);
-    return decodeToken;
-  }
-
-  get sidebar(): any {
-    const helper = new JwtHelperService();
-    const decodeToken = helper.decodeToken(this.menu);
     return decodeToken;
   }
 
