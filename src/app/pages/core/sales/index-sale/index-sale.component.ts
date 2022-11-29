@@ -4,6 +4,10 @@ import { SaleService } from 'src/app/services/sale.service';
 import { EmployeeService } from 'src/app/services/employee.service';
 import Swal from 'sweetalert2';
 
+import { Workbook } from 'exceljs';
+import * as fs from 'file-saver';
+import * as moment from 'moment';
+
 @Component({
   selector: 'app-update-sale',
   templateUrl: './index-sale.component.html',
@@ -18,6 +22,7 @@ export class IndexSaleComponent implements OnInit {
   public comments: Array<any> = [];
   public sales: Array<any> = [];
   public sales_arr: Array<any> = [];
+  public arr_json: Array<any> = [];
 
   public load_data = false;
   public sort = false;
@@ -171,4 +176,78 @@ export class IndexSaleComponent implements OnInit {
       return 0;
     });
   };
+
+  prepared_data() {
+    this.arr_json = [];
+    for (var item of this.sales) {
+      let fecha = moment(item.created_at).format('YYYY-MM-DD');
+      let color = '';
+
+      if (item.status == 'Cancelado') {
+        color = 'FA5C7C';
+      } else if (item.status == 'Procesando') {
+        color = 'FFBC00';
+      } else if (item.status == 'Aprobado') {
+        color = '0ACF97';
+      }
+
+      this.arr_json.push({
+        customer: item.customer?.full_name,
+        email: item.customer?.email,
+        method: item.method,
+        employee: item.employee?.full_name,
+        amount: item.amount,
+        date: fecha,
+        color: color,
+      });
+    }
+  }
+
+  export_excel() {
+    if (this.sales.length == 0) {
+      Swal.fire('', 'No hay matrículas para exportar.', 'warning');
+      return;
+    }
+
+    this.prepared_data();
+    let workbook = new Workbook();
+    let worksheet = workbook.addWorksheet('Matriculas');
+
+    worksheet.addRow(undefined);
+    for (let item of this.arr_json) {
+      let keys = Object.keys(item);
+
+      let temp = [];
+      for (let i of keys) {
+        temp.push(item[i]);
+      }
+
+      let row = worksheet.addRow(temp);
+      row.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: {
+          argb: item.color,
+        },
+      };
+    }
+
+    let fname = 'Reporte de Ventas RV' + Date.now();
+
+    worksheet.columns = [
+      { header: 'Cliente', key: 'col1', width: 30 },
+      { header: 'Correo', key: 'col2', width: 25 },
+      { header: 'Método', key: 'col3', width: 20 },
+      { header: 'Empleado', key: 'col4', width: 30 },
+      { header: 'Monto', key: 'col6', width: 15 },
+      { header: 'Fecha', key: 'col8', width: 20 },
+    ] as any;
+
+    workbook.xlsx.writeBuffer().then((data) => {
+      let blob = new Blob([data], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      });
+      fs.saveAs(blob, fname + '.xlsx');
+    });
+  }
 }

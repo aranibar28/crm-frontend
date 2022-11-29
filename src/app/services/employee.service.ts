@@ -65,9 +65,7 @@ export class EmployeeService {
     return this.http.get(url, this.headers).pipe(
       map(({ data }: any) =>
         data.filter(({ role, status }: any) => {
-          return (
-            (role == 'Asesor' || role == 'Administrador') && status == true
-          );
+          return role != 'Administrador' && status == true;
         })
       )
     );

@@ -280,7 +280,7 @@ export class IndexInscriptionComponent implements OnInit {
       { header: 'Cliente', key: 'col1', width: 30 },
       { header: 'Correo', key: 'col2', width: 25 },
       { header: 'Canal', key: 'col3', width: 20 },
-      { header: 'Asesor', key: 'col4', width: 30 },
+      { header: 'Empleado', key: 'col4', width: 30 },
       { header: 'Matricula', key: 'col5', width: 15 },
       { header: 'Monto', key: 'col6', width: 15 },
       { header: 'Subtotal', key: 'col7', width: 15 },
