@@ -26,7 +26,6 @@ export class NavbarComponent implements OnInit {
   is_logged() {
     if (this.authService.token) {
       this.user = this.authService.payload;
-      this.user.full_name = this.user.first_name + ' ' + this.user.last_name;
     }
   }
 

@@ -48,6 +48,10 @@ export class LoginComponent implements OnInit {
           let { data, token } = res;
           this.router.navigateByUrl('/');
           localStorage.setItem('token', token);
+          this.authService.emitter({
+            value: res.data.full_name,
+            image: res.data.image?.secure_url,
+          });
           Swal.fire('Bien enido', 'Hola ' + data.full_name, 'success');
         } else {
           Swal.fire('Error', res.msg, 'error');
