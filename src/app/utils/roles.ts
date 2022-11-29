@@ -1,8 +1,8 @@
 const roles: any = {
-  ADMINISTRADOR: ['Administrador', 'Gerente'],
-  VENDEDOR: ['Administrador', 'Gerente', 'Vendedor'],
-  INSTRUCTOR: ['Administrador', 'Gerente', 'Instructor'],
-  EMPLEADOS: ['Administrador', 'Gerente', 'Instructor', 'Vendedor'],
+  ADMINISTRADOR: ['Administrador'],
+  VENDEDOR: ['Administrador', 'Vendedor'],
+  INSTRUCTOR: ['Administrador', 'Instructor'],
+  EMPLEADOS: ['Administrador', 'Instructor', 'Vendedor'],
 };
 
-export const { ADMINISTRADOR, INSTRUCTOR, VENDEDOR, EMPLEADOS } = roles;
+export const { ADMINISTRADOR, VENDEDOR, INSTRUCTOR, EMPLEADOS } = roles;

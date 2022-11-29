@@ -87,7 +87,6 @@ export class ProfileAccountComponent implements OnInit {
     this.load_btn = true;
     this.employeeService.update_employee(this.id, this.myForm.value).subscribe({
       next: (res) => {
-        this.load_btn = false;
         if (res.data) {
           this.init_data();
           localStorage.setItem('token', res.token);
@@ -99,10 +98,11 @@ export class ProfileAccountComponent implements OnInit {
         } else {
           Swal.fire('Error', res.msg, 'error');
         }
+        this.load_btn = false;
       },
       error: (err) => {
         this.load_btn = false;
-        console.log(err);
+        Swal.fire('Error', err.error.msg, 'error');
       },
     });
   }

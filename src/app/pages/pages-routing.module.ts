@@ -21,7 +21,7 @@ const routes: Routes = [
       },
       {
         path: 'customers', loadChildren: () => import('./core/customers/customers.module').then((m) => m.CustomersModule),
-        data: { title: 'Clientes', role: ADMINISTRADOR },
+        data: { title: 'Clientes', role: EMPLEADOS },
       },
       {
         path: 'employees', loadChildren: () => import('./core/employees/employees.module').then((m) => m.EmployeesModule),

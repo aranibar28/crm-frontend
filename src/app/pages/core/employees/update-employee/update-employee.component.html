@@ -24,7 +24,6 @@
                    <select formControlName="role" class="form-control" [attr.disabled]="isAdmin ? '' : null">
                       <option value="" selected disabled>Seleccionar</option>
                       <option *ngIf="isAdmin" value="Administrador">Administrador</option>
-                      <option value="Gerente">Gerente</option>
                       <option value="Vendedor">Vendedor</option>
                       <option value="Asesor">Asesor</option>
                       <option value="Instructor">Instructor</option>

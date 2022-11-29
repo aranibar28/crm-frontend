@@ -12,12 +12,13 @@ const base_url = environment.base_url;
 export class AuthService {
   constructor(private http: HttpClient) {}
 
-  public menu: any = [];
   public courier = new ReplaySubject<any>();
 
   public emitter(res: any): void {
     this.courier.next(res);
   }
+
+  public menu: any = [];
 
   get token(): string {
     return localStorage.getItem('token') || '';
