@@ -129,7 +129,7 @@ export class CreateInscriptionComponent implements OnInit {
     this.cycleService.read_current_cycles(event.target.value).subscribe({
       next: (res) => {
         this.cycles = [];
-        this.cycles_arr = [];
+        this.cycles_arr = [];      
         res.data.forEach((element: any) => {
           if (element.cycle.status) {
             this.cycles.push(element);

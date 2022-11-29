@@ -20,6 +20,10 @@ const routes: Routes = [
         data: { title: 'Dashboard', role: EMPLEADOS },
       },
       {
+        path: '', loadChildren: () => import('./core/management/management.module').then((m) => m.ManagementModule),
+        data: { title: 'Administración', role: ADMINISTRADOR },
+      },
+      {
         path: 'customers', loadChildren: () => import('./core/customers/customers.module').then((m) => m.CustomersModule),
         data: { title: 'Clientes', role: EMPLEADOS },
       },

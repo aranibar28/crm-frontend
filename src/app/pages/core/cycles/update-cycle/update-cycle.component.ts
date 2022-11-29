@@ -243,7 +243,7 @@ export class UpdateCycleComponent implements OnInit {
   }
 
   del_instructor(item: any) {
-    const name = item.employee.full_name;
+    const name = item.employee?.full_name || 'NO DATA';
     Swal.fire({
       icon: 'question',
       title: 'Retirar Instructor',

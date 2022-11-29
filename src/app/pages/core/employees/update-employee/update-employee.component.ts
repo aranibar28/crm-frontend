@@ -105,7 +105,7 @@ export class UpdateEmployeeComponent implements OnInit {
           this.router.navigateByUrl('/employees');
           Swal.fire('Listo', 'Datos actualizados correctamente.', 'success');
         } else {
-          Swal.fire('Error', res.msg, 'error');
+          Swal.fire('Advertencia', res.msg, 'warning');
         }
       },
       error: (err) => {

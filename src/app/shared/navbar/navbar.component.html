@@ -19,7 +19,7 @@
                 <i class="mdi mdi-account-circle me-1"></i>
                 <span>Mi Perfil</span>
              </a>
-             <a routerLink="/config" class="dropdown-item notify-item">
+             <a *ngIf="allow" routerLink="/config" class="dropdown-item notify-item">
                 <i class="mdi mdi-account-edit me-1"></i>
                 <span>Configuraciones</span>
              </a>

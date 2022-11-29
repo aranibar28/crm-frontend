@@ -5,12 +5,11 @@ import { PublicService } from 'src/app/services/public.service';
 import { validation } from 'src/app/utils/validation';
 import Swal from 'sweetalert2';
 declare var $: any;
-
 @Component({
-  selector: 'app-config-account',
-  templateUrl: './config-account.component.html',
+  selector: 'app-index-management',
+  templateUrl: './index-management.component.html',
 })
-export class ConfigAccountComponent implements OnInit {
+export class IndexManagementComponent implements OnInit {
   @ViewChild('new_channel') new_channel!: ElementRef;
   @ViewChild('new_variety') new_variety!: ElementRef;
   public imgSelected: any = 'assets/images/resources/default.png';

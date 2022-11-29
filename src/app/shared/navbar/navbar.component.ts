@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 })
 export class NavbarComponent implements OnInit {
   public default_path = 'assets/images/resources/default.png';
+  public allow: boolean = this.authService.isAdmin;
   public valueEmitted = '';
   public imageEmitted = '';
   public user: any = {};

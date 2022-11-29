@@ -159,7 +159,7 @@
               <tbody>
                 <tr *ngFor="let item of instructors_rooms">
                   <td>{{ item.cycle_room?.room || 'NO DATA' }}</td>
-                  <td>{{ item.employee?.full_name }}</td>
+                  <td>{{ item.employee?.full_name || 'NO DATA' }}</td>
                   <td><a (click)="del_instructor(item)" class="text-danger pointer"> [Quitar] </a></td>
                 </tr>
               </tbody>

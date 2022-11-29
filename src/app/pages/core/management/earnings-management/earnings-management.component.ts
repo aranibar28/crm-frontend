@@ -6,10 +6,10 @@ import * as moment from 'moment';
 declare var $: any;
 
 @Component({
-  selector: 'app-performance-account',
-  templateUrl: './performance-account.component.html',
+  selector: 'app-earnings-management',
+  templateUrl: './earnings-management.component.html',
 })
-export class PerformanceAccountComponent implements OnInit {
+export class EarningsManagementComponent implements OnInit {
   public year = moment().format('YYYY');
   public month = moment().format('MM');
 
