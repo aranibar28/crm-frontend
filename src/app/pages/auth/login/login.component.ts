@@ -40,14 +40,10 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.myForm.value).subscribe({
       next: (res) => {
         if (res.data) {
-          if (this.myForm.controls['remember'].value) {
-            localStorage.setItem('email', res.data.email);
-          } else {
-            localStorage.removeItem('email');
-          }
           let { data, token } = res;
-          this.router.navigateByUrl('/');
           localStorage.setItem('token', token);
+          this.remember(data.email);
+          this.router.navigateByUrl('/');
           this.authService.emitter({
             value: res.data.full_name,
             image: res.data.image?.secure_url,
@@ -63,6 +59,14 @@ export class LoginComponent implements OnInit {
         console.log(err);
       },
     });
+  }
+
+  remember(email: string) {
+    if (this.myForm.controls['remember'].value) {
+      localStorage.setItem('email', email);
+    } else {
+      localStorage.removeItem('email');
+    }
   }
 
   validators(name: string) {

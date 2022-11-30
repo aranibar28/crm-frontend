@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { PublicService } from 'src/app/services/public.service';
 import { ProductService } from 'src/app/services/product.service';
 import { CategoryService } from 'src/app/services/category.service';
 import { validation } from 'src/app/utils/validation';
@@ -15,6 +16,7 @@ export class UpdateProductComponent implements OnInit {
   public imgCurrent: any = 'assets/images/resources/product.png';
   public categories: Array<any> = [];
   public varieties: Array<any> = [];
+  public varieties_list: Array<any> = [];
   public product: any = {};
 
   public load_data: boolean = true;
@@ -25,6 +27,7 @@ export class UpdateProductComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
+    private publicService: PublicService,
     private categoryService: CategoryService,
     private productService: ProductService,
     private router: Router,
@@ -35,6 +38,7 @@ export class UpdateProductComponent implements OnInit {
     this.activatedRoute.params.subscribe(({ id }) => (this.id = id));
     this.init_data();
     this.init_categories();
+    this.init_list_varieties();
   }
 
   myForm: FormGroup = this.fb.group({
@@ -73,6 +77,15 @@ export class UpdateProductComponent implements OnInit {
   init_categories() {
     this.categoryService.read_categories().subscribe({
       next: (res) => (this.categories = res.data),
+    });
+  }
+  init_list_varieties() {
+    this.publicService.get_company().subscribe({
+      next: (res) => {
+        if (res.data) {
+          this.varieties_list = res.data.varieties;
+        }
+      },
     });
   }
 

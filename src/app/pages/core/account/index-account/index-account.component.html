@@ -3,7 +3,7 @@
        <a [routerLink]="item.path" [ngClass]="item.theme" class="card widget-flat text-white">
        <div class="card-body">
           <div class="float-end">
-             <i [ngClass]="item.icon" class="mdi widget-icon bg-white text-dark"></i>
+             <i [ngClass]="item.icon" class="widget-icon bg-white text-dark mdi"></i>
           </div>
           <h6 class="text-uppercase mt-0">{{ item.title }}</h6>
           <h3 *ngIf="load_data" class="mb-0"><i class="spinner-border spinner-border-sm"></i></h3>

@@ -27,7 +27,10 @@
             </div>
             <div class="mb-3">
                <label class="form-label">Variedad</label><span class="text-danger ms-1">*</span>
-               <input formControlName="variety" class="form-control" type="text" placeholder="Variedad" />
+               <select formControlName="variety" class="form-control">
+                  <option value="" selected disabled>Seleccionar</option>
+                  <option *ngFor="let item of varieties_list" [value]="item.name">{{ item.name }}</option>
+               </select>
                <span *ngIf="validators('variety')" class="text-danger">{{ message('variety', 'variedad') }}</span>
             </div>
          </div>
