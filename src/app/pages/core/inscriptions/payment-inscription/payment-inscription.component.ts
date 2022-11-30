@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { InscriptionService } from 'src/app/services/inscription.service';
@@ -14,6 +14,7 @@ declare var $: any;
   templateUrl: './payment-inscription.component.html',
 })
 export class PaymentInscriptionComponent implements OnInit {
+  @ViewChild('closeModal') closeModal!: ElementRef;
   public load_data = true;
   public load_payments = true;
   public load_btn = false;
@@ -23,6 +24,7 @@ export class PaymentInscriptionComponent implements OnInit {
   public inscription: any = {};
   public details: Array<any> = [];
   public payments: Array<any> = [];
+  public initForm: any = {};
 
   public total_amount = 0;
   public total_payment = 0;
@@ -40,6 +42,7 @@ export class PaymentInscriptionComponent implements OnInit {
     this.activatedRoute.params.subscribe(({ id }) => (this.id = id));
     this.init_data();
     this.init_company();
+    this.initForm = this.myForm.value;
   }
 
   myForm: FormGroup = this.fb.group({
@@ -119,12 +122,14 @@ export class PaymentInscriptionComponent implements OnInit {
     this.saleService.create_inscription_payment(this.myForm.value).subscribe({
       next: (res) => {
         if (res.data) {
-          this.init_data();
-          this.load_btn = false;
           Swal.fire('Listo', 'Pago realizado.', 'success');
-        } else {
+          this.closeModal.nativeElement.click();
+          this.myForm.reset(this.initForm);
           this.load_btn = false;
+          this.init_data();
+        } else {
           Swal.fire('Advertencia', res.msg, 'warning');
+          this.load_btn = false;
         }
       },
     });

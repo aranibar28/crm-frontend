@@ -1,8 +1,9 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import { KpisService } from 'src/app/services/kpis.service';
-import * as moment from 'moment';
-import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { cards } from 'src/app/utils/widgets';
+import Chart from 'chart.js/auto';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-index-account',
@@ -10,7 +11,9 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 })
 export class IndexAccountComponent implements OnInit {
   public year = moment().format('YYYY');
-  public widgets = [];
+  public cards: any[] = cards;
+  public widgets: any[] = [];
+  public load_data = true;
   public load_num = true;
 
   public background = [
@@ -34,14 +37,28 @@ export class IndexAccountComponent implements OnInit {
   constructor(private kpisService: KpisService, private ngZone: NgZone) {}
 
   ngOnInit(): void {
-    this.init_data();
+    this.init_cards();
+    this.init_widgets();
     this.init_graphics_1();
   }
 
-  init_data() {
+  init_cards() {
+    this.load_data = true;
+    this.kpisService.kpi_widgets().subscribe({
+      next: (res) => {
+        for (let [index, item] of this.cards.entries()) {
+          item.data = res.widgets[index] || 0;
+          index++;
+        }
+        this.load_data = false;
+      },
+    });
+  }
+
+  init_widgets() {
     this.kpisService.kpi_month_payments().subscribe({
-      next: ({ widgets }) => {
-        this.widgets = widgets;
+      next: (res) => {
+        this.widgets = res.widgets;
         this.load_num = false;
       },
     });
@@ -49,7 +66,7 @@ export class IndexAccountComponent implements OnInit {
 
   init_graphics_1() {
     this.kpisService.kpi_month_payments().subscribe({
-      next: ({ arr_months, arr_amounts }) => {
+      next: ({ arr_months, sales_amounts, inscriptions_amounts }) => {
         const ctx = <HTMLCanvasElement>document.getElementById('myChart_1');
         new Chart(ctx, {
           type: 'line',
@@ -57,8 +74,15 @@ export class IndexAccountComponent implements OnInit {
             labels: arr_months,
             datasets: [
               {
-                label: 'Ingresos ' + this.year,
-                data: arr_amounts,
+                label: 'Ventas',
+                data: sales_amounts,
+                backgroundColor: this.background,
+                borderColor: this.border,
+                borderWidth: 2,
+              },
+              {
+                label: 'Matriculas',
+                data: inscriptions_amounts,
                 backgroundColor: this.background,
                 borderColor: this.border,
                 borderWidth: 2,
@@ -66,6 +90,8 @@ export class IndexAccountComponent implements OnInit {
             ],
           },
           options: {
+            responsive: true,
+            maintainAspectRatio: false,
             plugins: {
               datalabels: {
                 align: 'top',

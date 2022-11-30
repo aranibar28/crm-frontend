@@ -18,6 +18,11 @@ export class KpisService {
     return { headers: { token: this.token } };
   }
 
+  kpi_widgets(): Observable<any> {
+    const url = `${base_url}/kpi_widgets`;
+    return this.http.get(url, this.headers);
+  }
+
   kpi_month_payments(): Observable<any> {
     const url = `${base_url}/kpi_month_payments`;
     return this.http.get(url, this.headers);

@@ -1,71 +1,84 @@
 <div class="row">
-   <div class="col-12">
-       <div class="card widget-inline">
-           <div class="card-body p-0">
-               <div class="row g-0">
-                   <div class="col-sm-6 col-lg-3">
-                       <div class="card shadow-none m-0">
-                           <div class="card-body text-center">
-                               <i class="dripicons-store text-muted" style="font-size: 24px;"></i>
-                               <h3><span *ngIf="load_num"><i class="spinner-border spinner-border-sm"></i></span></h3>
-                               <h3><span>{{ widgets[0] | currency: 'S/. '}}</span></h3>
-                               <p class="text-muted font-15 mb-0">Ingreso Total {{ year }}</p>
-                           </div>
-                       </div>
-                   </div>
-
-                   <div class="col-sm-6 col-lg-3">
-                       <div class="card shadow-none m-0 border-start">
-                           <div class="card-body text-center">
-                               <i class="dripicons-tag text-muted" style="font-size: 24px;"></i>
-                               <h3><span *ngIf="load_num"><i class="spinner-border spinner-border-sm"></i></span></h3>
-                               <h3><span>{{ widgets[1] | currency: 'S/. '}}</span></h3>
-                               <p class="text-muted font-15 mb-0">Ingresos del mes</p>
-                               <span class="float-center text-warning font-12">Mes anterior: {{ widgets[2] | currency: 'S/. '}}</span>
-                           </div>
-                       </div>
-                   </div>
-
-                   <div class="col-sm-6 col-lg-3">
-                       <div class="card shadow-none m-0 border-start">
-                           <div class="card-body text-center">
-                               <i class="dripicons-cart text-muted" style="font-size: 24px;"></i>
-                               <h3><span *ngIf="load_num"><i class="spinner-border spinner-border-sm"></i></span></h3>
-                               <h3><span>{{ widgets[3] }}</span></h3>
-                               <p class="text-muted font-15 mb-0">Ventas del mes</p>
-                               <span class="float-center text-warning font-12">Mes anterior: {{ widgets[4] }}</span>
-                           </div>
-                       </div>
-                   </div>
-
-                   <div class="col-sm-6 col-lg-3">
-                       <div class="card shadow-none m-0 border-start">
-                           <div class="card-body text-center">
-                               <i class="dripicons-calendar text-muted" style="font-size: 24px;"></i>
-                               <h3><span *ngIf="load_num"><i class="spinner-border spinner-border-sm"></i></span></h3>
-                               <h3><span>{{ widgets[5] }}</span></h3>
-                               <p class="text-muted font-15 mb-0">Matrículas del mes</p>
-                               <span class="float-center text-warning font-12">Mes anterior: {{ widgets[6] }}</span>
-                           </div>
-                       </div>
-                   </div>
-
-               </div>
-           </div>
+    <div *ngFor="let item of cards" class="col-12 col-md-3">
+       <a [routerLink]="item.path" [ngClass]="item.theme" class="card widget-flat text-white">
+       <div class="card-body">
+          <div class="float-end">
+             <i [ngClass]="item.icon" class="mdi widget-icon bg-white text-dark"></i>
+          </div>
+          <h6 class="text-uppercase mt-0">{{ item.title }}</h6>
+          <h3 *ngIf="load_data" class="mb-0"><i class="spinner-border spinner-border-sm"></i></h3>
+          <h3 *ngIf="!load_data" class="mb-0">{{ item.data }}</h3>
+          <p class="mb-0"></p>
        </div>
-   </div>
+       </a>
+    </div>
 </div>
+
+<div class="row">
+    <div class="col-12">
+       <div class="card widget-inline">
+          <div class="card-body p-0">
+             <div class="row g-0">
+                <div class="col-sm-6 col-lg-3">
+                   <div class="card shadow-none m-0">
+                      <div class="text-center py-2">
+                         <i class="dripicons-store text-muted" style="font-size: 24px;"></i>
+                         <h3><span *ngIf="load_num"><i class="spinner-border spinner-border-sm"></i></span></h3>
+                         <h3><span *ngIf="!load_num">{{ widgets[0] | currency: 'S/. '}}</span></h3>
+                         <p class="text-muted font-15 mb-0">Ingreso Total Anual</p>
+                      </div>
+                   </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                   <div class="card shadow-none m-0 border-start">
+                      <div class="text-center py-2">
+                         <i class="dripicons-tag text-muted" style="font-size: 24px;"></i>
+                         <h3><span *ngIf="load_num"><i class="spinner-border spinner-border-sm"></i></span></h3>
+                         <h3><span *ngIf="!load_num">{{ widgets[1] | currency: 'S/. '}}</span></h3>
+                         <p class="text-muted font-15 mb-0">Ingreso Total Mensual</p>
+                         <span class="float-center text-warning font-12">Mes anterior: {{ widgets[2] | currency: 'S/. '}}</span>
+                      </div>
+                   </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                   <div class="card shadow-none m-0 border-start">
+                      <div class="text-center py-2">
+                         <i class="dripicons-cart text-muted" style="font-size: 24px;"></i>
+                         <h3><span *ngIf="load_num"><i class="spinner-border spinner-border-sm"></i></span></h3>
+                         <h3><span *ngIf="!load_num">{{ widgets[3] | currency: 'S/. '}}</span></h3>
+                         <p class="text-muted font-15 mb-0">Ingresos de Ventas</p>
+                         <span class="float-center text-warning font-12">Mes anterior: {{ widgets[4] | currency: 'S/. '}}</span>
+                      </div>
+                   </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                   <div class="card shadow-none m-0 border-start">
+                      <div class="text-center py-2">
+                         <i class="dripicons-calendar text-muted" style="font-size: 24px;"></i>
+                         <h3><span *ngIf="load_num"><i class="spinner-border spinner-border-sm"></i></span></h3>
+                         <h3><span *ngIf="!load_num">{{ widgets[5] | currency: 'S/. '}}</span></h3>
+                         <p class="text-muted font-15 mb-0">Ingresos de Matriculas</p>
+                         <span class="float-center text-warning font-12">Mes anterior: {{ widgets[6] | currency: 'S/. '}}</span>
+                      </div>
+                   </div>
+                </div>
+             </div>
+          </div>
+       </div>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-md-12">
-        <div class="card">
-            <div class="card-body">
-                <h4>Ingresos Mensuales {{ year }}</h4>
-                <div class="row">
-                    <div class="col-12" id="content_chart_1">
-                        <canvas id="myChart_1" height="80"></canvas>
-                    </div>
+       <div class="card">
+          <div class="card-body">
+             <h4>Ingresos {{ year }}</h4>
+             <div class="row">
+                <div class="col-12" id="content_chart_1">
+                   <canvas id="myChart_1" height="200"></canvas>
                 </div>
-            </div>
-        </div>
+             </div>
+          </div>
+       </div>
     </div>
 </div>
