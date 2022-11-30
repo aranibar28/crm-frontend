@@ -9,27 +9,10 @@ import * as moment from 'moment';
   templateUrl: './performance-management.component.html',
 })
 export class PerformanceManagementComponent implements OnInit {
+  public background = ['#6993FF', '#1BC5BD', '#8950FC', '#FFA800', '#F64E60'];
   public year = moment().format('YYYY');
-  public widgets = [];
   public load_num = true;
-
-  public background = [
-    'rgba(255, 99, 132, 0.2)',
-    'rgba(54, 162, 235, 0.2)',
-    'rgba(255, 206, 86, 0.2)',
-    'rgba(75, 192, 192, 0.2)',
-    'rgba(153, 102, 255, 0.2)',
-    'rgba(255, 159, 64, 0.2)',
-  ];
-
-  public border = [
-    'rgba(255, 99, 132, 1)',
-    'rgba(54, 162, 235, 1)',
-    'rgba(255, 206, 86, 1)',
-    'rgba(75, 192, 192, 1)',
-    'rgba(153, 102, 255, 1)',
-    'rgba(255, 159, 64, 1)',
-  ];
+  public widgets = [];
 
   constructor(private kpisService: KpisService, private ngZone: NgZone) {}
 
@@ -65,20 +48,25 @@ export class PerformanceManagementComponent implements OnInit {
               {
                 label: 'Prospectos',
                 data: arr_counts1,
-                backgroundColor: ['rgba(153, 102, 255, 0.2)'],
-                borderColor: ['rgba(153, 102, 255, 1)'],
+                backgroundColor: ['#1BC5BD'],
+                borderColor: ['#1BC5BD'],
                 borderWidth: 2,
               },
               {
                 label: 'Clientes',
                 data: arr_counts2,
-                backgroundColor: ['rgba(75, 192, 192, 0.2)'],
-                borderColor: ['rgba(75, 192, 192, 1)'],
+                backgroundColor: ['#8950FC'],
+                borderColor: ['#8950FC'],
                 borderWidth: 2,
               },
             ],
           },
           options: {
+            plugins: {
+              datalabels: {
+                color: '#fff',
+              },
+            },
             responsive: true,
             maintainAspectRatio: false,
             scales: {
@@ -104,11 +92,8 @@ export class PerformanceManagementComponent implements OnInit {
               {
                 label: 'Géneros',
                 data: genre,
-                backgroundColor: [
-                  'rgba(54, 162, 235, 0.2)',
-                  'rgba(255, 99, 132, 0.2)',
-                ],
-                borderColor: ['rgba(54, 162, 235, 1)', 'rgba(255, 99, 132, 1)'],
+                backgroundColor: ['#6993FF', '#8950FC'],
+                borderColor: ['#6993FF', '#8950FC'],
                 borderWidth: 2,
               },
             ],
@@ -122,7 +107,7 @@ export class PerformanceManagementComponent implements OnInit {
             plugins: {
               datalabels: {
                 align: 'center',
-                color: '#000',
+                color: '#fff',
                 formatter: (value, context) => {
                   const datapoints = context.chart.data.datasets[0].data;
                   function totalSum(total: number, datapoint: any) {
@@ -154,7 +139,7 @@ export class PerformanceManagementComponent implements OnInit {
                 label: 'Productos',
                 data: arr_counts,
                 backgroundColor: this.background,
-                borderColor: this.border,
+                borderColor: ['#CCC'],
                 borderWidth: 2,
               },
             ],
@@ -163,6 +148,9 @@ export class PerformanceManagementComponent implements OnInit {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
+              datalabels: {
+                color: '#fff',
+              },
               tooltip: {
                 callbacks: {
                   title: (context): any => {
@@ -191,7 +179,7 @@ export class PerformanceManagementComponent implements OnInit {
                 label: 'Cursos',
                 data: arr_counts,
                 backgroundColor: this.background,
-                borderColor: this.border,
+                borderColor: ['#CCC'],
                 borderWidth: 2,
               },
             ],
@@ -200,6 +188,9 @@ export class PerformanceManagementComponent implements OnInit {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
+              datalabels: {
+                color: '#fff',
+              },
               tooltip: {
                 callbacks: {
                   title: (context): any => {
@@ -209,6 +200,7 @@ export class PerformanceManagementComponent implements OnInit {
               },
             },
           },
+
           plugins: [ChartDataLabels],
         });
       },
@@ -228,7 +220,7 @@ export class PerformanceManagementComponent implements OnInit {
                 label: 'Clientes',
                 data: arr_amounts,
                 backgroundColor: this.background,
-                borderColor: this.border,
+                borderColor: ['#CCC'],
                 borderWidth: 2,
               },
             ],
@@ -246,6 +238,7 @@ export class PerformanceManagementComponent implements OnInit {
               },
               datalabels: {
                 align: 'center',
+                color: '#fff',
                 formatter: (value) => {
                   return 'S/.' + value;
                 },
