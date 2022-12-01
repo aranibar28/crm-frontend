@@ -87,3 +87,12 @@ export const widgets: any[] = [
     data2: 0,
   },
 ];
+
+/*  
+  # Import scripts!!
+  var script = document.createElement('script');
+  script.src = 'assets/js/app.min.js';
+  script.async = false;
+  document.head.appendChild(script);
+
+*/

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable, ReplaySubject, map, catchError, of } from 'rxjs';
@@ -18,24 +18,29 @@ export class AuthService {
     this.courier.next(res);
   }
 
-  public menu: any = [];
+  public menu: any[] = [];
 
   get token(): string {
     return localStorage.getItem('token') || '';
   }
 
   get headers() {
-    return { headers: { token: this.token } };
+    return { headers: new HttpHeaders({ token: this.token }) };
+  }
+  
+  login(data: any): Observable<any> {
+    const url = `${base_url}/auth/login`;
+    return this.http.post(url, data);
   }
 
   isValidateToken(): Observable<boolean> {
-    return this.http.get(`${base_url}/employees/renew`, this.headers).pipe(
+    return this.http.get(`${base_url}/auth/renew_token`, this.headers).pipe(
       map((res: any) => {
         localStorage.setItem('token', res.token);
         this.menu = res.menu;
         return true;
       }),
-      catchError((error) => of(false))
+      catchError(() => of(false))
     );
   }
 
@@ -85,10 +90,5 @@ export class AuthService {
 
   isAllowed(allowRoles: any[]): boolean {
     return allowRoles.includes(this.role);
-  }
-
-  login(data: any): Observable<any> {
-    const url = `${base_url}/employees/login_employee`;
-    return this.http.post(url, data);
   }
 }

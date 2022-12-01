@@ -27,6 +27,7 @@
     "moment": "^2.29.4",
     "ngx-image-drawing": "^1.2.4",
     "ngx-pagination": "^6.0.2",
+    "ngx-spinner": "^14.0.0",
     "ngx-tinymce": "^14.1.1",
     "print-js": "^1.6.0",
     "rxjs": "~7.5.0",
