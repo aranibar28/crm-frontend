@@ -62,7 +62,7 @@
                         <td><i class="uil uil-calender me-1"></i>{{ item.created_at | date }}</td>
                         <td class="text-end">
                             <a [routerLink]="['update', item._id]" class="font-18 text-info me-2" title="Editar"><i class="uil uil-pen"></i></a>
-                            <a (click)="delete_item(item)" class="font-18 text-danger" title="Eliminar"><i class="uil uil-trash"></i></a>
+                            <a *ngIf="!item.protect" (click)="delete_item(item)" class="font-18 text-danger" title="Eliminar"><i class="uil uil-trash"></i></a>
                         </td>
                     </tr>
                 </tbody>

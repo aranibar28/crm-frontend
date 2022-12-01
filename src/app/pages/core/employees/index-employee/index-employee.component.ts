@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EmployeeService } from 'src/app/services/employee.service';
 import Swal from 'sweetalert2';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-index-employee',
@@ -26,9 +27,14 @@ export class IndexEmployeeComponent implements OnInit {
     this.load_data = true;
     this.employeeService.read_employees().subscribe({
       next: (res) => {
-        this.load_data = false;
+        // TODO: Delete feature protect
+        for (let [index, item] of res.data.entries()) {
+          if (index <= 2) item.protect = true;
+          index++;
+        }
         this.employees = res.data;
         this.employees_arr = res.data;
+        this.load_data = false;
       },
       error: (err) => {
         this.load_data = false;

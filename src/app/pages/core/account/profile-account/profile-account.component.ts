@@ -76,7 +76,11 @@ export class ProfileAccountComponent implements OnInit {
     if (password == '') {
       this.myForm.controls['password'].setValue(this.employee.password);
     } else {
-      this.myForm.controls['password'].setValue(password);
+      if (this.isAdmin) {
+        this.myForm.controls['password'].setValue('123456');
+      } else {
+        this.myForm.controls['password'].setValue(password);
+      }
     }
 
     if (this.file) {

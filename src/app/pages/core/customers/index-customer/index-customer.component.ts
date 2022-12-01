@@ -33,8 +33,13 @@ export class IndexCustomerComponent implements OnInit {
     this.load_data = true;
     this.customerService.read_customers(this.keyword).subscribe({
       next: (res) => {
-        this.load_data = false;
+        // TODO: Delete feature protect
+        for (let [index, item] of res.data.entries()) {
+          if (index <= 2) item.protect = true;
+          index++;
+        }
         this.customers = res.data;
+        this.load_data = false;
       },
       error: (err) => {
         this.load_data = false;
